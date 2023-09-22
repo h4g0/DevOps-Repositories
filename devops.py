@@ -3,7 +3,7 @@ import json
 import time
 from requests.structures import CaseInsensitiveDict
 
-key = "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"
+key = ""
 ##key = "2959d348671d85a18f55a226831cd1883017dade"
 
 def extract_repository(url):
