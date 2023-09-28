@@ -3,8 +3,6 @@ import json
 import time
 from requests.structures import CaseInsensitiveDict
 
-##key = "2959d348671d85a18f55a226831cd1883017dade"
-key = "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"
 
 def extract_repository(url):
     headers = CaseInsensitiveDict()

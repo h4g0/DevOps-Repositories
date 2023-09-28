@@ -4,5 +4,6 @@
 
 ```bash
 pip install requests
+pip install pymongo
 python tool.py
 ```
