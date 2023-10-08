@@ -3,7 +3,14 @@
 #### To use
 
 ```bash
+install python3
 pip install requests
 pip install pymongo
-python tool.py
+pip install pybase64
+```
+
+#### 
+```bash
+pip install requests
+pip install pymongo
 ```

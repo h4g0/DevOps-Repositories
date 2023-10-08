@@ -26,3 +26,32 @@ class DB:
         mycol = self.client.Repositories["random"]
 
         return list(mycol.find({}))
+    
+    def get_unprocessed_repositories(self):
+        mycol = self.client.Repositories["random"]
+        
+        return list(mycol.find({ "$or": [{"processtools": None} , {"processtools": False}]}))
+    
+    def add_tool_repo(self,tool,repo):
+        mycol = self.client.Repositories[tool]
+
+        mycol.insert_one(repo)
+
+    def get_repository(self, name):
+        mycol = self.client.Repositories["random"]
+
+        repos = list(mycol.find({"name": {name}}))
+
+        if (len(repos) > 0): return repos[0]
+
+        return None
+
+    def mark_as_processed(self,name):
+        mycol = self.client.Repositories["random"]
+
+        mycol.update_many({"name": {name}, "processtools": True})
+
+    def add_tools(self,name,tools):
+        mycol = self.client.Repositories["random"]
+
+        mycol.update_many({"name": {name}}, {"tools_used": tools,"processtools": True})
