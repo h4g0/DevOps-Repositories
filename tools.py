@@ -98,8 +98,8 @@ def find_repos_tools(db,repos,max_file_calls=10):
 
         print(tools)
 
-        db.add_tools(f["name"],list(tools))
-
+        db.add_tools(repo["name"],list(tools))
+        
         time.sleep(sleep)
 
 def get_total_repos_per_tool(repos):
@@ -107,10 +107,13 @@ def get_total_repos_per_tool(repos):
     count = dict()
 
     for repo in repos:
-        tools = repo["tools"]
+        print(repo.get("name"))
+        tools = repo.get("tools_used") or []
+
 
         for tool in tools:
-            count.update(tool, (count.get(tool) | 0) + 1)
+            new_count =  count.get(tool,0) + 1
+            count.update({tool: new_count})
 
     return count
 

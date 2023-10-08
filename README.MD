@@ -1,16 +1,14 @@
 #### This project contains scripts used to gather data from GitHub repositories concerning various DevOps tools
 
-#### To use
+#### To use install
 
 ```bash
 install python3
-pip install requests
-pip install pymongo
-pip install pybase64
+pip install -r requirements.txt
 ```
 
-#### 
+#### Run
+
 ```bash
-pip install requests
-pip install pymongo
+python3 main.py
 ```

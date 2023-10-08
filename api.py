@@ -23,18 +23,19 @@ def extract_repository(url):
 def get_random_repositories(stars = 20,page=0):
     result = extract_repository(f"https://api.github.com/search/repositories?q=stars:>={stars}&per_page=100&page={page}&order=desc")
 
-    print(len(result.json()["items"]))
+    print(len(result.json().get("items",[])))
     ##print(pretty_json(result.json()))
     
-    return result.json()["items"]
+    return result.json().get("items",[])
 
-def get_multiple_random_repositories(pages, stars=20):
+def get_multiple_random_repositories(pages, stars):
     repositories = []
 
     for i in range(0,pages):
         time.sleep(sleep)
-        repositories.extend(get_random_repositories(stars, i))
-
+        new_repositories = get_random_repositories(stars, i)
+        repositories.extend(new_repositories)
+        if len(new_repositories) == 0 : return repositories
 
     return repositories 
 

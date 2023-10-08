@@ -1,3 +1,4 @@
+import json
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
@@ -49,9 +50,9 @@ class DB:
     def mark_as_processed(self,name):
         mycol = self.client.Repositories["random"]
 
-        mycol.update_many({"name": {name}, "processtools": True})
+        mycol.update_many({"name": name}, {"$set": {"processtools": True}})
 
     def add_tools(self,name,tools):
         mycol = self.client.Repositories["random"]
 
-        mycol.update_many({"name": {name}}, {"tools_used": tools,"processtools": True})
+        mycol.update_many({"name": name}, {"$set": {"tools_used": tools, "processtools": True }})

@@ -1,0 +1,3 @@
+pip install requests
+pip install pymongo
+pip install pybase64
