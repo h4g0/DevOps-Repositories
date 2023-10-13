@@ -14,18 +14,34 @@ sleep = 2
 
 def extract_repository(url):
     
-    headers = {'Authorization': f'token {key}'}
+    headers = {'User-Agent': 'request', 'Authorization': f'token {key}'}
 
     result = requests.request("GET", url, headers=headers)
 
     return result
 
+def get_content_repositories(content,repo,language):
+    result = extract_repository(f"https://api.github.com/search/code?q={content}+in:file+language:{language}+repo:{repo}")
+        
+    print(f"https://api.github.com/search/code?q={content}+in:file+language:{language}+repo:{repo}")
+    print(result)
+
+    return result.json()["items"]
+
+def get_random_repositories_day(created,stars,day,page=0):
+    result = extract_repository(f"https://api.github.com/search/repositories?q=stars:>={stars}&per_page=100&page={page}&order=desc")
+
+    
+    print(len(result.json().get("items",[])))
+    ##print(pretty_json(result.json()))
+    return result.json().get("items",[])
+
 def get_random_repositories(stars = 20,page=0):
     result = extract_repository(f"https://api.github.com/search/repositories?q=stars:>={stars}&per_page=100&page={page}&order=desc")
 
+    
     print(len(result.json().get("items",[])))
     ##print(pretty_json(result.json()))
-    
     return result.json().get("items",[])
 
 def get_multiple_random_repositories(pages, stars):
@@ -38,6 +54,14 @@ def get_multiple_random_repositories(pages, stars):
         if len(new_repositories) == 0 : return repositories
 
     return repositories 
+
+def get_raw_file(repo,branch,path):
+
+    result = extract_repository(f"https://raw.githubusercontent.com/{repo}/{branch}/{path}")
+
+    print(f"{repo}/{branch}/{path}")
+
+    return str(result.content)
 
 def pretty_json(item):
     print(json.dumps(item, indent=2))
