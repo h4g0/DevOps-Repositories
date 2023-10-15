@@ -17,7 +17,18 @@ Maven = "Maven"
 Kubernetes = "Kubernetes"
 GitHubActions = "GitHubActions"
 
-repos_filename = [("Travis","\.travis\.yml"),
+repos_filename = [("Agola","\.agola"),
+                  ("AppVeyor","appveyor\.yml"),
+                  ("ArgoCD","argo-cd"),
+                  ("Bytebase","air\.toml"),
+                ("Cartographer","cartographer\.yaml"),
+                ("CircleCI","circleci"),
+                ("Cloud 66 Skycap","cloud66"),
+                ("Cloudbees Codeship","codeship-services\.yml"),
+                ("Devtron","devtron-ci\.yaml"),
+                ("Flipt","flipt.yml"),
+                ("GitLab","gitlab-ci\.yml"),
+                ("Travis","\.travis\.yml"),
                         ("Gradle","Build\.gradle"),
                         ("Rake","Rakefile"),
                         ("Jenkins","Jenkinsfile"),
@@ -28,7 +39,6 @@ repos_filename = [("Travis","\.travis\.yml"),
                         ("Nagios","Nagios\.cfg"),
                         ("Prometheus","Prometheus\.yml"),
                         ("Maven","pom\.xml"),
-                        ("CircleCI","circleci"),
                         ("Terraform","\.tf"),
                         ("Logstach","\/etc\/logstash\/conf\.d\/"),
                         ("Zabbix","Zabbix_server\.conf"),
@@ -39,8 +49,17 @@ repos_code_maven = [("JUnit","JUnitCore"),
                     ("Mesos","mesos"),
                     ("Flyway","flywaydb")]
 
-repos_code_yml = [("GitHubActions","jobs"),
-                  ("Kubernetes","apiVersion")]
+repos_package_json = [("Brigade","brigade")]
+
+repos_code_yml = [("Codefresh","DaemonSet"),
+                ("Codefresh","StatefulSet"),
+                ("Drone","kind\:"),
+                ("Flagger","flagger"),
+                ("Flux","fluxcd"),
+                ("Concourse","resources\:"),
+                  ("Kubernetes","apiVersion"),
+                  ("GitHubActions","jobs"),
+                  ("AWS CodePipeline","roleArn")]
 
 def check_file_names(filestools,filename):
     
