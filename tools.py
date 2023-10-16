@@ -28,6 +28,10 @@ repos_filename = [("Agola","\.agola"),
                 ("Devtron","devtron-ci\.yaml"),
                 ("Flipt","flipt.yml"),
                 ("GitLab","gitlab-ci\.yml"),
+                ("Google Cloud Build","cloudbuild.yaml"),
+                ("Helmwave","helmwave.yml")
+
+
                 ("Travis","\.travis\.yml"),
                         ("Gradle","Build\.gradle"),
                         ("Rake","Rakefile"),
@@ -55,10 +59,12 @@ repos_code_yml = [("Codefresh","DaemonSet"),
                 ("Codefresh","StatefulSet"),
                 ("Drone","kind\:"),
                 ("Flagger","flagger"),
+                ("Harness.io","featureFlags\:"),
                 ("Flux","fluxcd"),
+                ("GoCD","stages:"),
                 ("Concourse","resources\:"),
                   ("Kubernetes","apiVersion"),
-                  ("GitHubActions","jobs"),
+                  ("GitHubActions","jobs\:"),
                   ("AWS CodePipeline","roleArn")]
 
 def check_file_names(filestools,filename):
