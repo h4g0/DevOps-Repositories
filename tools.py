@@ -8,7 +8,8 @@ import asyncio
 
 from re import search, IGNORECASE
 
-from api import decoded_base_64, get_content_repositories, get_raw_file, get_repo_tree
+from api import decoded_base_64, get_content_repositories, get_random_repositories_day, get_raw_file, get_repo_tree
+from transform_data import reduce_repositories
 
 sleep = 0
 sleep_code = 1
@@ -29,9 +30,7 @@ repos_filename = [("Agola","\.agola"),
                 ("Flipt","flipt.yml"),
                 ("GitLab","gitlab-ci\.yml"),
                 ("Google Cloud Build","cloudbuild.yaml"),
-                ("Helmwave","helmwave.yml")
-
-
+                ("Helmwave","helmwave.yml"),
                 ("Travis","\.travis\.yml"),
                         ("Gradle","Build\.gradle"),
                         ("Rake","Rakefile"),
@@ -224,23 +223,52 @@ def get_repository_names_from_db(myDB,number):
 
     return repo_names[:number]
 
-def get_repos_data_dates(myDB,start,finish):
-    
-    curr_date = finish
-    datetime_curr_date = datetime.datetime(curr_date)
-    datetine_start = datetime.datetime(start)
+def get_all_random_repositories_dates(start,end):
 
-    one_minute = 60000
-    one_week = 7 * 24 * 60 * one_minute
+    repos = []
+    names = set()
+
+    def add_new_repos(new_repos):
+
+        for r in new_repos:
+            if not (r["full_name"] in names):
+                repos.append(r)
+                names.add(r["full_name"])
+    
+    new_repos = get_random_repositories_day(start,end,0)
+
+    add_new_repos(new_repos)
+    
+    page = 1
+    
+    while(len(new_repos) > 0):
+        new_repos = get_random_repositories_day(start,end,page)
+        
+        add_new_repos(new_repos)
+
+        page += 1
+
+    return repos
+
+def get_repos_data_dates(myDB,start,finish,stars):
+
+    curr_date = finish
+    datetime_curr_date = datetime.datetime.strptime(curr_date, "%y/%m/%d")
+    datetine_start = datetime.datetime.strptime(start, "%y/%m/%d")
 
     while(datetime_curr_date > datetine_start):
         
-        end_date = datetime_curr_date.strftime('%m/%d/%Y')
+        end_date = datetime_curr_date.strftime('%Y-%m-%d')
 
-        datetime_curr_date = datetime.datetime(datetime_curr_date.ctime() - one_week)
+        datetime_curr_date = datetime_curr_date - datetime.timedelta(days=7)
 
-        start_date =  datetime_curr_date.strftime('%m/%d/%Y')
+        start_date =  ( datetime_curr_date + datetime.timedelta(days=1) ).strftime('%Y-%m-%d')
 
+        print(f"----{start_date}----{end_date}\n")
 
-        print(f"----{start_date}---{end_date}\n")
-        
+  
+        rr = list(filter(lambda x: x["stargazers_count"] >= stars,get_all_random_repositories_dates(start_date,end_date)))
+
+        print(len(rr))
+
+        myDB.add_repositories(reduce_repositories(rr))

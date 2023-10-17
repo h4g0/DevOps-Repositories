@@ -28,11 +28,11 @@ def get_content_repositories(content,repo,language):
 
     return result.json()["items"]
 
-def get_random_repositories_day(created,stars,day,page=0):
-    result = extract_repository(f"https://api.github.com/search/repositories?q=stars:>={stars}&per_page=100&page={page}&order=desc")
+def get_random_repositories_day(start,end,page=0):
+    result = extract_repository(f"https://api.github.com/search/repositories?q=created:{start}..{end}&sort=stars&per_page=100&page={page}&order=desc")
 
     
-    print(len(result.json().get("items",[])))
+    ##print(len(result.json().get("items",[])))
     ##print(pretty_json(result.json()))
     return result.json().get("items",[])
 

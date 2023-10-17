@@ -4,7 +4,7 @@ import time
 from requests.structures import CaseInsensitiveDict
 from api import get_content_repositories, get_multiple_random_repositories, get_raw_file
 from db import DB
-from tools import find_repos_tools, get_total_repos_per_tool
+from tools import find_repos_tools, get_all_random_repositories_dates, get_repos_data_dates, get_total_repos_per_tool
 from transform_data import reduce_repositories
 import asyncio
 
@@ -46,6 +46,25 @@ def main():
     ##add_multiple_repositories_to_db(myDB,2,10)
     ##get_tool_usage_statistics(myDB)
     
+    ##get_repos_data_dates(myDB,"08/04/10","23/10/15")
+
+    start = time.time()
+
+    rr = get_repos_data_dates(myDB,"20/08/15","23/08/14",10)
+    
+    print( time.time() - start )
+    
+    """rr = [x["stargazers_count"]for x in get_all_random_repositories_dates("2023-10-08","2023-10-15")]
+
+    print(rr)
+
+    ur = set()
+
+    for r in rr:
+        ur.add(r)
+
+    print(len(ur))"""
+
     """start = time.time()
 
     await process_repositories(myDB)
@@ -53,10 +72,4 @@ def main():
     print( time.time() - start )"""
 
 
-loop = asyncio.get_event_loop()
-    
-try:
-    loop.run_until_complete(main())
-finally:
-    loop.run_until_complete(loop.shutdown_asyncgens())  # see: https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.loop.shutdown_asyncgens
-    loop.close()
+main()
