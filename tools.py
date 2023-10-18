@@ -35,7 +35,7 @@ repos_filename = [("Agola","\.agola"),
                 ("Jenkins","Jenkinsfile"),
                 ("JenkinsX","jx\-requirements\.yml"),
                 ("JenkinsX","buildPack\/pipeline\.yml"),
-                ("JenkinsX","jenkins\-x.\yml"),
+                ("JenkinsX","jenkins\-x\.yml"),
                 ("Keptn","charts\/keptn\/"),
                 ("Liquibase","liquibase\.properties"),
                 ("Mergify","mergify"),
@@ -46,7 +46,6 @@ repos_filename = [("Agola","\.agola"),
                 ("Screwdriver","screwdriver.yaml"),
                 ("Semaphore","\.semaphore\/semaphore\.yaml"),
                 ("TeamCity","\.teamcity"),
-                ("Travis","\.travis\.yml"),
                 ("werf","werf\.yaml"),
                 ("Woodpecker CI", "\.woodpecker\.yml")]
 
@@ -64,7 +63,7 @@ repos_code_yml = [("Codefresh","DaemonSet"),
                 ("Flux","fluxcd"),
                 ("GoCD","stages:"),
                 ("Concourse","resources\:"),
-                  ("Kubernetes","apiVersion"),
+                  ("Kubernetes","apiVersion\:"),
                   ("GitHubActions","jobs\:"),
                   ("AWS CodePipeline","roleArn"),
                    ]
@@ -150,7 +149,9 @@ def count_extension(tree,extension):
 
     return count
 
-async def find_repos_tool(db,repo):
+def find_repos_tool(db,repo):
+
+    ##start = time.time()
 
     tools = set()
 
@@ -165,11 +166,8 @@ async def find_repos_tool(db,repo):
         if tool != None:
                
             tools.add(tool)
-        
-    """if Maven in tools:
-        new_tools = check_tools_read_file(repo["full_name"],repos_code_maven,tree,repo["default_branch"],"pom\.xml")
-        tools = tools.union(new_tools)
-
+   
+    """
     if checkExtensionTree("\.yml",tree) or checkExtensionTree("\.yaml",tree):
         
         new_tools = check_tools_read_file(repo["full_name"],repos_code_yml,tree,repo["default_branch"],"\.yml")
@@ -190,18 +188,35 @@ async def find_repos_tool(db,repo):
 
     db.add_tools(repo["name"],list(tools))"""
 
+    ##print(tools)
+    ##print(f"tool time {time.time() - start}")
+    
+    return tools
+
 async def test():
     print("test")
 
 def find_repos_tools(db,repos):
     
-    tasks = list()
+    tools_in_repos = []
 
     for repo in repos:
-        find_repos_tool(db,repo)
 
-   
+        try:
+            tools = find_repos_tool(db,repo)
+
+            if(len(tools) > 0):
+                tools_in_repos.append(tools)
+
+        except:
+            full_name = repo["full_name"]
+            print(f"Error for repo {full_name}")
         
+    for tool in tools_in_repos:
+        print(tool)
+
+    print(len(tools_in_repos))
+
 def get_total_repos_per_tool(repos):
     
     count = dict()

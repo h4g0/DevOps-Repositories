@@ -33,6 +33,15 @@ class DB:
         
         return list(mycol.find({ "$or": [{"processtools": None} , {"processtools": False}]}))
     
+    def get_random_unprocessed_repositorioes(self,size):
+        mycol = self.client.Repositories["random"]
+
+        qor =  {"$or": [{"processtools": None} , {"processtools": False}]}
+        match = { "$match":  qor}
+        sample = {"$sample": {"size": size}} 
+
+        return list(mycol.aggregate([ match, sample]))
+    
     def add_tool_repo(self,tool,repo):
         mycol = self.client.Repositories[tool]
 

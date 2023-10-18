@@ -28,10 +28,10 @@ def get_tool_usage_statistics(myDB):
 
     print(get_total_repos_per_tool(repos))
 
-def process_repositories(myDB):
+def process_repositories(myDB,count):
         
-    repos = myDB.get_unprocessed_repositories()
-
+    repos = myDB.get_random_unprocessed_repositorioes(count)
+    
     find_repos_tools(myDB,repos)
 
 
@@ -40,9 +40,13 @@ def main():
     myDB = DB()
 
     time.sleep(5)
-
     ##get_raw_file("MPLew-is/github-api-client","main","Examples/GithubActionsWebhookClient/ReadMe.md")
-    ##process_repositories(myDB)
+
+    start = time.time()
+    
+    process_repositories(myDB,1000)
+
+    print(f"total time{time.time() - start}")
     ##add_multiple_repositories_to_db(myDB,2,10)
     ##get_tool_usage_statistics(myDB)
     
