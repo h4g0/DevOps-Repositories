@@ -6,7 +6,7 @@ from api import get_content_repositories, get_multiple_random_repositories, get_
 from db import DB
 from tools import find_repos_tools, get_all_random_repositories_dates, get_repos_data_dates, get_total_repos_per_tool
 from transform_data import reduce_repositories
-import asyncio
+from multiprocessing import Pool
 
 def pretty_json(item):
     print(json.dumps(item, indent=2))
@@ -48,11 +48,11 @@ def main():
     
     ##get_repos_data_dates(myDB,"08/04/10","23/10/15")
 
-    start = time.time()
+    """start = time.time()
 
-    rr = get_repos_data_dates(myDB,"20/08/15","23/08/14",10)
+    rr = get_repos_data_dates(myDB,"12/01/01","16/12/31",10)
     
-    print( time.time() - start )
+    print( time.time() - start )"""
     
     """rr = [x["stargazers_count"]for x in get_all_random_repositories_dates("2023-10-08","2023-10-15")]
 

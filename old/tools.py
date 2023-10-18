@@ -48,7 +48,25 @@ repos_filename = [("Agola","\.agola"),
                 ("TeamCity","\.teamcity"),
                 ("Travis","\.travis\.yml"),
                 ("werf","werf\.yaml"),
-                ("Woodpecker CI", "\.woodpecker\.yml")]
+                ("Woodpecker CI", "\.woodpecker\.yml"),
+                        ("Gradle","Build\.gradle"),
+                        ("Rake","Rakefile"),
+                        ("Rancher","Kube_config_rancher-cluster\.yml"),
+                        ("Docker","Dockerfile"),
+                        ("Progress Cheff","Metadata\.rb"),
+                        ("Puppet","Site\.pp"),
+                        ("Nagios","Nagios\.cfg"),
+                        ("Prometheus","Prometheus\.yml"),
+                        ("Maven","pom\.xml"),
+                        ("Terraform","\.tf"),
+                        ("Logstach","\/etc\/logstash\/conf\.d\/"),
+                        ("Zabbix","Zabbix_server\.conf"),
+                        ("Nagios","Nagios\.cfg")]
+    
+repos_code_maven = [("JUnit","JUnitCore"),
+                    ("Selenium","selenium"),
+                    ("Mesos","mesos"),
+                    ("Flyway","flywaydb")]
 
 repos_package_json = [("Brigade","brigade"),
                       ("k6","k6"),

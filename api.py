@@ -12,11 +12,13 @@ Kubernetes = "Kubernetes"
 
 sleep = 2
 
+session = requests.Session()
+
 def extract_repository(url):
     
-    headers = {'User-Agent': 'request', 'Authorization': f'token {key}'}
+    headers = {'User-Agent': 'request','Accept-Encoding': 'gzip', 'Authorization': f'token {key}'}
 
-    result = requests.request("GET", url, headers=headers)
+    result = session.get(url, headers=headers)
 
     return result
 
