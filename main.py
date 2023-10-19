@@ -2,7 +2,7 @@ import requests
 import json
 import time
 from requests.structures import CaseInsensitiveDict
-from api import get_content_repositories, get_multiple_random_repositories, get_raw_file
+from api import get_content_repositories, get_multiple_random_repositories, get_rate_limit, get_raw_file
 from db import DB
 from tools import find_repos_tools, get_all_random_repositories_dates, get_repos_data_dates, get_total_repos_per_tool
 from transform_data import reduce_repositories
@@ -50,7 +50,10 @@ def main():
     time.sleep(5)
     ##get_raw_file("MPLew-is/github-api-client","main","Examples/GithubActionsWebhookClient/ReadMe.md")
 
-    test_time_per_repo(myDB,1000)
+    ##test_time_per_repo(myDB,10)
+
+    get_rate_limit()
+
     ##add_multiple_repositories_to_db(myDB,2,10)
     ##get_tool_usage_statistics(myDB)
     

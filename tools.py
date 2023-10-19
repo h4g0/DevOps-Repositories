@@ -5,6 +5,7 @@ import time
 import base64
 import functools
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 from re import search, IGNORECASE
 
@@ -13,6 +14,8 @@ from transform_data import reduce_repositories
 
 sleep = 0
 sleep_code = 1
+workers = 200
+workers_git = 32
 
 Maven = "Maven"
 Kubernetes = "Kubernetes"
@@ -20,17 +23,17 @@ GitHubActions = "GitHubActions"
 
 repos_filename = [("Agola","\.agola"),
                   ("AppVeyor","appveyor\.yml"),
-                  ("ArgoCD","argo-cd"),
+                  ("ArgoCD","argo\-cd"),
                   ("Bytebase","air\.toml"),
                 ("Cartographer","cartographer\.yaml"),
                 ("CircleCI","circleci"),
                 ("Cloud 66 Skycap","cloud66"),
                 ("Cloudbees Codeship","codeship-services\.yml"),
                 ("Devtron","devtron-ci\.yaml"),
-                ("Flipt","flipt.yml"),
+                ("Flipt","flipt\.yml"),
                 ("GitLab","gitlab-ci\.yml"),
-                ("Google Cloud Build","cloudbuild.yaml"),
-                ("Helmwave","helmwave.yml"),
+                ("Google Cloud Build","cloudbuild\.yaml"),
+                ("Helmwave","helmwave\.yml"),
                 ("Travis","\.travis\.yml"),
                 ("Jenkins","Jenkinsfile"),
                 ("JenkinsX","jx\-requirements\.yml"),
@@ -49,11 +52,6 @@ repos_filename = [("Agola","\.agola"),
                 ("werf","werf\.yaml"),
                 ("Woodpecker CI", "\.woodpecker\.yml")]
 
-repos_package_json = [("Brigade","brigade"),
-                      ("k6","k6"),
-                      ("OpenFeature","openfeature"),
-                      ("Unleash","unleash")]
-
 repos_code_yml = [("Codefresh","DaemonSet"),
                 ("Codefresh","StatefulSet"),
                  ("XL Deploy","apiVersion\: \(xl-deploy\|xl\)"),
@@ -61,7 +59,7 @@ repos_code_yml = [("Codefresh","DaemonSet"),
                 ("Flagger","flagger"),
                 ("Harness.io","featureFlags\:"),
                 ("Flux","fluxcd"),
-                ("GoCD","stages:"),
+                ("GoCD","stages\:"),
                 ("Concourse","resources\:"),
                   ("Kubernetes","apiVersion\:"),
                   ("GitHubActions","jobs\:"),
@@ -118,20 +116,36 @@ def check_tools(reponame,repos_code,extension):
 
     return tools
 
+
 def check_tools_read_file(reponame,repos_code,tree,branch,extension):
+
 
     tools = set()
 
-    for f in tree:
-        
-        if len(tools) == len(repos_code):
-            return tools
 
-        if checkExtension(extension,f["path"]):
-            rawf = get_raw_file(reponame,branch,f["path"])
+    ###with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+    ###results = pool.map(tester, urls)~
+
+
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+
+        tasks = []
+
+        for f in tree:
+
+            if checkExtension(extension,f["path"]):
+                t = executor.submit(get_raw_file,reponame,branch,f["path"])
+                tasks.append(t)
+
+        for t in tasks:
+            
+            
+            rawf = t.result()
+
             for r in repos_code:
-                if check_file_contents([r] ,rawf):
-                    tools.add(r[0])
+                    
+                    if check_file_contents([r] ,rawf):
+                        tools.add(r[0])
 
     return tools
 
@@ -160,11 +174,6 @@ def find_tools_inside_files(repo,tree):
         tools = tools.union(new_tools)
 
         new_tools = check_tools_read_file(repo["full_name"],repos_code_yml,tree,repo["default_branch"],"\.yaml")
-        tools = tools.union(new_tools)
-    
-    if checkExtensionTree("package\.json",tree):
-        
-        new_tools = check_tools_read_file(repo["full_name"],repos_package_json,tree,repo["default_branch"],"\.yml")
         tools = tools.union(new_tools)
 
     return tools
@@ -206,21 +215,38 @@ async def test():
     print("test")
 
 def find_repos_tools(db,repos):
-    
-    tools_in_repos = []
 
-    for repo in repos:
-
+    def find_repos_tool_container(repo):
+        
         try:
             tools = find_repos_tool(db,repo)
 
-            if(len(tools) > 0):
-                tools_in_repos.append(tools)
-
+            return tools
+        
         except:
             full_name = repo["full_name"]
             print(f"Error for repo {full_name}")
+
+            return set()
         
+    tools_in_repos = []
+
+    futures = []
+
+    with ThreadPoolExecutor(max_workers=workers_git) as executor:
+
+        for repo in repos:
+            f = executor.submit(find_repos_tool_container,repo)
+            futures.append(f)
+        
+    for f in futures:
+
+        tools = f.result()
+
+        if(len(tools) > 0):
+            tools_in_repos.append(tools)
+
+       
     for tool in tools_in_repos:
         print(tool)
 

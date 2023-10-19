@@ -14,6 +14,13 @@ sleep = 2
 
 session = requests.Session()
 
+token = key
+
+def change_token(new_key):
+    
+    global token
+    token = new_key
+
 def extract_repository(url):
     
     headers = {'User-Agent': 'request','Accept-Encoding': 'gzip', 'Authorization': f'token {key}'}
@@ -82,3 +89,9 @@ def get_repo_tree(owner,repo,branch):
     result = extract_repository(f"https://api.github.com/repos/{owner}/{repo}/git/trees/{branch}?recursive=1")
 
     return result.json()
+
+def get_rate_limit():
+
+    result = extract_repository("https://api.github.com/rate_limit")
+
+    print(result.json())
