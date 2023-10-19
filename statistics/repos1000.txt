@@ -1,0 +1,346 @@
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'Concourse'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Concourse', 'GitHubActions', 'Drone'}
+{'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'AppVeyor', 'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Concourse', 'GitHubActions', 'Kubernetes', 'CircleCI', 'Drone'}
+{'Travis'}
+{'GitHubActions'}
+{'Travis'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'AppVeyor', 'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'AppVeyor', 'Travis', 'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions', 'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'AppVeyor', 'Travis', 'GitHubActions'}
+{'GoCD', 'Concourse', 'GitHubActions'}
+{'GitHubActions'}
+{'GitLab', 'GitHubActions', 'GoCD'}
+{'GitHubActions'}
+{'Drone'}
+{'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GoCD', 'GitHubActions'}
+{'GitHubActions', 'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions', 'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'Concourse'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Concourse'}
+{'GitHubActions'}
+{'k6', 'AppVeyor', 'Travis'}
+{'GitHubActions'}
+{'Concourse', 'Codefresh', 'Kubernetes', 'Drone'}
+{'GitHubActions'}
+{'AppVeyor', 'Drone'}
+{'GitHubActions', 'Travis'}
+{'Codefresh', 'Kubernetes', 'Concourse', 'GitHubActions', 'Drone'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GoCD', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Jenkins', 'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'Jenkins', 'GitHubActions'}
+{'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'Travis'}
+{'AppVeyor', 'Travis', 'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'k6', 'AppVeyor', 'Travis', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'Concourse', 'GitHubActions', 'Kubernetes', 'Drone'}
+{'GitHubActions', 'Travis'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitLab', 'GoCD'}
+{'Travis'}
+{'GitHubActions'}
+{'Travis'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions', 'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Concourse', 'Kubernetes', 'Drone'}
+{'Travis'}
+{'GitHubActions'}
+{'GitLab', 'GitHubActions', 'GoCD'}
+{'GitHubActions'}
+{'GitHubActions', 'Travis'}
+{'Travis'}
+{'Travis'}
+{'Travis'}
+{'AppVeyor'}
+{'Kubernetes', 'Drone'}
+{'Concourse'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitLab', 'GitHubActions', 'GoCD'}
+{'Travis'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'Concourse', 'AWS CodePipeline'}
+{'GitHubActions', 'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'CircleCI', 'AppVeyor', 'GitHubActions'}
+{'Concourse', 'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'Kubernetes', 'Drone'}
+{'Travis'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'GitLab', 'Travis', 'GoCD'}
+{'Jenkins'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'CircleCI', 'GitHubActions', 'Travis'}
+{'GitHubActions'}
+{'Concourse', 'AppVeyor', 'Travis', 'AWS CodePipeline'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions', 'Kubernetes'}
+{'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GoCD', 'Travis'}
+{'Jenkins'}
+{'Concourse', 'GitHubActions'}
+{'Travis'}
+{'Mergify', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'AppVeyor', 'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'Concourse'}
+{'Kubernetes', 'CircleCI', 'AWS CodePipeline', 'Drone', 'GoCD', 'Flux', 'Codefresh', 'Concourse', 'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'AppVeyor', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'Jenkins', 'GitHubActions'}
+{'Travis'}
+{'Concourse', 'GitHubActions'}
+{'Travis'}
+{'AppVeyor', 'GitHubActions'}
+{'GitHubActions'}
+{'Concourse', 'Codefresh', 'Kubernetes', 'Drone'}
+{'GitHubActions'}
+{'Concourse', 'Travis', 'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions', 'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions', 'Travis'}
+{'CircleCI', 'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'Travis'}
+{'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'Concourse'}
+{'GitHubActions'}
+{'GitHubActions', 'Travis'}
+{'Travis'}
+{'GoCD', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'CircleCI', 'AppVeyor', 'Travis', 'GitHubActions'}
+{'GitHubActions', 'Travis'}
+{'GitHubActions', 'Travis'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GoCD', 'GitHubActions', 'Kubernetes', 'Concourse', 'Drone'}
+{'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Concourse', 'Travis'}
+{'AppVeyor', 'Travis', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'Mergify'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions', 'Travis'}
+{'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}
+{'AppVeyor', 'Travis', 'GitHubActions'}
+{'CircleCI', 'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'AppVeyor', 'Travis'}
+{'AppVeyor', 'Travis'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'GitHubActions'}
+{'Travis', 'Drone'}
+{'GitHubActions'}
+{'Travis'}
+{'GitHubActions'}

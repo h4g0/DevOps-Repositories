@@ -34,6 +34,14 @@ def process_repositories(myDB,count):
     
     find_repos_tools(myDB,repos)
 
+def test_time_per_repo(myDB,number_of_repos):
+    start = time.time()
+
+    process_repositories(myDB,number_of_repos)
+
+    total_time = time.time() - start
+
+    print(f"total time {total_time}: time per repo: {total_time / number_of_repos}")
 
 def main():
     
@@ -42,11 +50,7 @@ def main():
     time.sleep(5)
     ##get_raw_file("MPLew-is/github-api-client","main","Examples/GithubActionsWebhookClient/ReadMe.md")
 
-    start = time.time()
-    
-    process_repositories(myDB,1000)
-
-    print(f"total time{time.time() - start}")
+    test_time_per_repo(myDB,1000)
     ##add_multiple_repositories_to_db(myDB,2,10)
     ##get_tool_usage_statistics(myDB)
     

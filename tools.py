@@ -118,17 +118,12 @@ def check_tools(reponame,repos_code,extension):
 
     return tools
 
-def check_tools_read_file(reponame,repos_code,tree,branch,extension,max_count=20):
+def check_tools_read_file(reponame,repos_code,tree,branch,extension):
 
     tools = set()
-    count = 0
 
     for f in tree:
-
-        count += 1
         
-        if count > max_count: return tools
-
         if len(tools) == len(repos_code):
             return tools
 
@@ -149,6 +144,31 @@ def count_extension(tree,extension):
 
     return count
 
+
+def find_tools_inside_files(repo,tree):
+
+    tools = set()
+
+    yaml_c = count_extension(tree,'\.yaml') + count_extension(tree,'\.yml')
+    package_json = count_extension(tree,'\.package.json')
+
+    print(f"Count yaml: {yaml_c} package.json: {package_json}")
+          
+    if checkExtensionTree("\.yml",tree) or checkExtensionTree("\.yaml",tree):
+        
+        new_tools = check_tools_read_file(repo["full_name"],repos_code_yml,tree,repo["default_branch"],"\.yml")
+        tools = tools.union(new_tools)
+
+        new_tools = check_tools_read_file(repo["full_name"],repos_code_yml,tree,repo["default_branch"],"\.yaml")
+        tools = tools.union(new_tools)
+    
+    if checkExtensionTree("package\.json",tree):
+        
+        new_tools = check_tools_read_file(repo["full_name"],repos_package_json,tree,repo["default_branch"],"\.yml")
+        tools = tools.union(new_tools)
+
+    return tools
+
 def find_repos_tool(db,repo):
 
     ##start = time.time()
@@ -167,26 +187,15 @@ def find_repos_tool(db,repo):
                
             tools.add(tool)
    
-    """
-    if checkExtensionTree("\.yml",tree) or checkExtensionTree("\.yaml",tree):
-        
-        new_tools = check_tools_read_file(repo["full_name"],repos_code_yml,tree,repo["default_branch"],"\.yml")
-        tools = tools.union(new_tools)
 
-        if ( not ( (Kubernetes in tools) and (GitHubActions in tools) ) ):
+    new_tools = find_tools_inside_files(repo,tree)
 
-            new_tools = check_tools_read_file(repo["full_name"],repos_code_yml,tree,repo["default_branch"],"\.yaml")
-            tools = tools.union(new_tools)
+    tools = tools.union(new_tools)
 
-    maven_count = count_extension(tree,'\.xml')
-    yaml_count = count_extension(tree,'\.yml') + count_extension(tree,'\.yaml') 
-
-    print(f"maven count: {maven_count}")
-    print(f"yaml count: {yaml_count}")
 
     print(tools)
 
-    db.add_tools(repo["name"],list(tools))"""
+    ###db.add_tools(repo["name"],list(tools))
 
     ##print(tools)
     ##print(f"tool time {time.time() - start}")
