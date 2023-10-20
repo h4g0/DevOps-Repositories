@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 from re import search, IGNORECASE
 
 from api import decoded_base_64, get_content_repositories, get_random_repositories_day, get_raw_file, get_repo_tree
+from db import add_tools_once
 from transform_data import reduce_repositories
 
 sleep = 0
@@ -184,9 +185,12 @@ def find_repos_tool(db,repo):
 
     tools = set()
 
-    print(repo["name"])
+    ##print(repo["name"])
 
-    tree = get_repo_tree(repo["owner"],repo["name"],repo["default_branch"])["tree"]
+    tree = get_repo_tree(repo["owner"],repo["name"],repo["default_branch"])
+    
+    tree_url = tree["url"]
+    tree = tree["tree"]
 
     for f in tree:
 
@@ -208,8 +212,9 @@ def find_repos_tool(db,repo):
 
     ##print(tools)
     ##print(f"tool time {time.time() - start}")
-    
-    return tools
+    ##db.add_tools(repo["name"],list(tools),tree_url)
+
+    return (repo["_id"],tree_url,tools)
 
 async def test():
     print("test")
@@ -217,7 +222,7 @@ async def test():
 def find_repos_tools(db,repos):
 
     def find_repos_tool_container(repo):
-        
+          
         try:
             tools = find_repos_tool(db,repo)
 
@@ -227,10 +232,8 @@ def find_repos_tools(db,repos):
             full_name = repo["full_name"]
             print(f"Error for repo {full_name}")
 
-            return set()
+            return ("ErrorInProcessingRepo","",set())
         
-    tools_in_repos = []
-
     futures = []
 
     with ThreadPoolExecutor(max_workers=workers_git) as executor:
@@ -238,26 +241,29 @@ def find_repos_tools(db,repos):
         for repo in repos:
             f = executor.submit(find_repos_tool_container,repo)
             futures.append(f)
-        
+
+    repotools = []
+    
     for f in futures:
 
-        tools = f.result()
-
-        if(len(tools) > 0):
-            tools_in_repos.append(tools)
-
-       
-    for tool in tools_in_repos:
-        print(tool)
-
-    print(len(tools_in_repos))
-
+        name,tree,tools = f.result()
+            
+        repotools.append((name,list(tools),tree))
+            
+        
+            ##print("---------------//--------------")
+            ##print(tree)
+            ##print(tools)
+            
+    db.reset_connetion()
+    db.add_tools_many(repotools)
+    
 def get_total_repos_per_tool(repos):
     
     count = dict()
 
     for repo in repos:
-        print(repo.get("name"))
+        ##print(repo.get("name"))
         tools = repo.get("tools_used") or []
 
 

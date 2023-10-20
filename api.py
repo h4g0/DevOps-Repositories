@@ -23,7 +23,7 @@ def change_token(new_key):
 
 def extract_repository(url):
     
-    headers = {'User-Agent': 'request','Accept-Encoding': 'gzip', 'Authorization': f'token {key}'}
+    headers = {'User-Agent': 'request','Accept-Encoding': 'gzip', 'Authorization': f'token {token}'}
 
     result = session.get(url, headers=headers)
 

@@ -2,11 +2,12 @@ import requests
 import json
 import time
 from requests.structures import CaseInsensitiveDict
-from api import get_content_repositories, get_multiple_random_repositories, get_rate_limit, get_raw_file
+from api import change_token, get_content_repositories, get_multiple_random_repositories, get_rate_limit, get_raw_file
 from db import DB
 from tools import find_repos_tools, get_all_random_repositories_dates, get_repos_data_dates, get_total_repos_per_tool
 from transform_data import reduce_repositories
 from multiprocessing import Pool
+from keys import key,keyhugo2,keyhugo3,keyjacome
 
 def pretty_json(item):
     print(json.dumps(item, indent=2))
@@ -22,7 +23,7 @@ def add_multiple_repositories_to_db(myDB,pages,stars=20):
 
 def get_tool_usage_statistics(myDB):
     
-    repos = myDB.get_repositories()
+    repos = myDB.get_processed_repositories()
 
     print(len(repos))
 
@@ -43,16 +44,45 @@ def test_time_per_repo(myDB,number_of_repos):
 
     print(f"total time {total_time}: time per repo: {total_time / number_of_repos}")
 
+def process_repos_keys(myDB,count):
+    
+    onehour = (60 * 60)
+
+    keys = [key,keyhugo2,keyhugo3,keyjacome]
+
+    timeperkey = int(onehour / len(keys))
+
+    print(timeperkey / 60)
+    
+    for k in keys:
+
+        change_token(k)
+
+        start = time.time()
+
+        process_repositories(myDB,count)
+        
+        times = int(time.time() - start)
+        
+        sleeping_time = timeperkey - times
+
+        if sleeping_time < 0:
+            continue
+
+        print(f"sleeping for {sleeping_time} seconds")
+
+        time.sleep(sleeping_time)
+        
 def main():
     
     myDB = DB()
 
-    time.sleep(5)
     ##get_raw_file("MPLew-is/github-api-client","main","Examples/GithubActionsWebhookClient/ReadMe.md")
 
-    ##test_time_per_repo(myDB,10)
-
-    get_rate_limit()
+    ##get_rate_limit()
+    while True:
+        process_repos_keys(myDB,5000)
+    ##test_time_per_repo(myDB,1000)
 
     ##add_multiple_repositories_to_db(myDB,2,10)
     ##get_tool_usage_statistics(myDB)

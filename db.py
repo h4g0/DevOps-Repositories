@@ -1,9 +1,18 @@
 import json
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from pymongo import UpdateMany
 
 from keys import uri
 
+
+def add_tools_once(name,tools,tree):
+        
+        client = MongoClient(uri, server_api=ServerApi('1'))
+
+        mycol = client.Repositories["random"]
+
+        mycol.update_many({"full_name": name}, {"$set": {"tree": tree,"tools_used": tools, "processtools": True }})
 
 class DB:
     # Send a ping to confirm a successful connection
@@ -18,6 +27,15 @@ class DB:
         except Exception as e:
             print(e)
 
+    def reset_connetion(self):
+        
+        self.client = MongoClient(uri, server_api=ServerApi('1'))
+
+        try:
+            self.client.admin.command('ping')
+            print("Pinged your deployment. You successfully connected to MongoDB!")
+        except Exception as e:
+            print(e)
     def add_repositories(self,respoitories):
         mycol = self.client.Repositories["random"]
 
@@ -32,6 +50,11 @@ class DB:
         mycol = self.client.Repositories["random"]
         
         return list(mycol.find({ "$or": [{"processtools": None} , {"processtools": False}]}))
+    
+    def get_processed_repositories(self):
+        mycol = self.client.Repositories["random"]
+        
+        return list(mycol.find({ "processtools": True}))
     
     def get_random_unprocessed_repositorioes(self,size):
         mycol = self.client.Repositories["random"]
@@ -59,9 +82,28 @@ class DB:
     def mark_as_processed(self,name):
         mycol = self.client.Repositories["random"]
 
-        mycol.update_many({"name": name}, {"$set": {"processtools": True}})
+        mycol.update_many({"full_name": name}, {"$set": {"processtools": True}})
 
-    def add_tools(self,name,tools):
+    def add_tools(self,name,tools,tree):
         mycol = self.client.Repositories["random"]
 
-        mycol.update_many({"name": name}, {"$set": {"tools_used": tools, "processtools": True }})
+        mycol.update_many({"full_name": name}, {"$set": {"tree": tree,"tools_used": tools, "processtools": True }})
+
+    def add_tools_many(self,repos):
+        
+        bulkreqs = []
+
+        for repo in repos:
+
+            name,tools,tree = repo
+            bulkreqs.append(UpdateMany({"_id": name}, {"$set": {"tree": tree,"tools_used": tools, "processtools": True }}))
+
+        
+        mycol = self.client.Repositories["random"]
+
+        mycol.bulk_write(bulkreqs)
+
+    def mark_as_unprocessed(self):
+        mycol = self.client.Repositories["random"]
+
+        mycol.update_many({}, {"$set": {"tools_used": [], "processtools": False }})
