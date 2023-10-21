@@ -78,8 +78,9 @@ def main():
     myDB = DB()
 
     ##get_raw_file("MPLew-is/github-api-client","main","Examples/GithubActionsWebhookClient/ReadMe.md")
-
+    ##get_tool_usage_statistics(myDB)
     ##get_rate_limit()
+    ##process_repos_keys(myDB,20)
     while True:
         process_repos_keys(myDB,5000)
     ##test_time_per_repo(myDB,1000)
