@@ -4,6 +4,7 @@ import time
 from requests.structures import CaseInsensitiveDict
 from api import change_token, get_content_repositories, get_multiple_random_repositories, get_rate_limit, get_raw_file
 from db import DB
+from stats import get_programming_languages, get_programming_languages_repos, get_stats_repos_per_tool
 from tools import find_repos_tools, get_all_random_repositories_dates, get_repos_data_dates, get_total_repos_per_tool
 from transform_data import reduce_repositories
 from multiprocessing import Pool
@@ -79,10 +80,14 @@ def main():
 
     ##get_raw_file("MPLew-is/github-api-client","main","Examples/GithubActionsWebhookClient/ReadMe.md")
     ##get_tool_usage_statistics(myDB)
+
+    repos = myDB.get_processed_repositories()
+
+    print(get_programming_languages_repos(repos))
     ##get_rate_limit()
     ##process_repos_keys(myDB,20)
-    while True:
-        process_repos_keys(myDB,5000)
+    """while True:
+        process_repos_keys(myDB,5000)"""
     ##test_time_per_repo(myDB,1000)
 
     ##add_multiple_repositories_to_db(myDB,2,10)

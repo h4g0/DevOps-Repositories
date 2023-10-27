@@ -56,6 +56,14 @@ class DB:
         
         return list(mycol.find({ "processtools": True}))
     
+    def get_random_processed_repositories(self,size):
+        mycol = self.client.Repositories["random"]
+
+        match = { "$match":  {"processtools": True}}
+        sample = {"$sample": {"size": size}} 
+
+        return list(mycol.aggregate([ match, sample]))
+    
     def get_random_unprocessed_repositorioes(self,size):
         mycol = self.client.Repositories["random"]
 
