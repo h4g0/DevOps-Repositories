@@ -26,9 +26,11 @@ def get_stats_repos_per_tool(repos):
     for key in count:
         count_list.append((key,count.get(key,0)))
 
-    sorted_list = sorted(count_list, key=lambda x: x[1])
+    filtered_list = filter(lambda x: x[1] > 0, count_list)
 
-    values = ",".join(["{" + '"a": "' + x[0] + '" , '  + '"b": ' + str(x[1]) + "}" for x in sorted_list])
+    sorted_list = sorted(filtered_list, key=lambda x: x[1])
+
+    values = ",".join(["{" + '"tool": "' + x[0] + '" , '  + '"count": ' + str(x[1]) + "}" for x in sorted_list])
 
 
     template =  '''{
@@ -51,8 +53,8 @@ def get_stats_repos_per_tool(repos):
     "cursor": "pointer"
   },
   "encoding": {
-    "x": {"field": "a", "type": "ordinal"},
-    "y": {"field": "b", "scale": {"type": "log", "base": 10}, "type": "quantitative"},
+    "x": {"field": "tool", "type": "ordinal"},
+    "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative"},
     "fillOpacity": {
       "condition": {"param": "select", "value": 1},
       "value": 0.3
@@ -84,7 +86,7 @@ def get_stats_repos_per_tool(repos):
 
     return template
 
-def get_programming_languages(repos,max_lang=100):
+def get_programming_languages(repos):
     
     count = dict()
 
@@ -100,30 +102,61 @@ def get_programming_languages(repos,max_lang=100):
     for key in count:
         count_list.append((key,count.get(key,0)))
 
-    sorted_list = sorted(count_list, key=lambda x: x[1],reverse=True)
+    filtered_list = filter(lambda x: x[1] > 1000, count_list)
 
-    if( max_lang < len(sorted_list)):
-        remainig = functools.reduce(lambda a,b: a + b[1],sorted_list[max_lang:],0)
+    sorted_list = sorted(filtered_list, key=lambda x: x[1],reverse=True)
 
-        sorted_list = sorted_list[0: max_lang]
-
-        sorted_list.append(("Other",remainig))
-
-    values = ",".join(["{" + '"category": "' + x[0] + '" , '  + '"value": ' + str(x[1]) + "}" for x in sorted_list])
+    values = ",".join(["{" + '"tool": "' + x[0] + '" , '  + '"count": ' + str(x[1]) + "}" for x in sorted_list])
 
 
     template =  '''{
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Pie Chart with percentage_tooltip",
+  "description": "A bar chart with highlighting on hover and selecting on click. (Inspired by Tableau's interaction style.)",
   "data": {
-    "values": [ (values) ]
+    "values": [
+      (values)
+    ]
   },
-  "mark": {"type": "arc", "tooltip": true},
-"width": 500,
-  "height": 500,
+  "params": [
+    {
+      "name": "highlight",
+      "select": {"type": "point", "on": "pointerover"}
+    },
+    {"name": "select", "select": "point"}
+  ],
+  "mark": {
+    "type": "bar",
+    "fill": "#4C78A8",
+    "stroke": "black",
+    "cursor": "pointer"
+  },
   "encoding": {
-    "theta": {"field": "value", "type": "quantitative", "stack": "normalize"},
-    "color": {"field": "category", "type": "nominal"}
+    "x": {"field": "tool", "type": "ordinal", "sort": "-y"},
+    "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative"},
+    "fillOpacity": {
+      "condition": {"param": "select", "value": 1},
+      "value": 0.3
+    },
+    "strokeWidth": {
+      "condition": [
+        {
+          "param": "select",
+          "empty": false,
+          "value": 2
+        },
+        {
+          "param": "highlight",
+          "empty": false,
+          "value": 1
+        }
+      ],
+      "value": 0
+    }
+  },
+  "config": {
+    "scale": {
+      "bandPaddingInner": 0.2
+    }
   }
 }'''
 
@@ -133,11 +166,9 @@ def get_programming_languages(repos,max_lang=100):
 
 
 
-def get_programming_languages_repos(repos):
+def get_programming_languages_repos(repos,languages):
     
     count = dict()
-
-    languages = map(lambda x: x["language"] or "None" , repos)
 
     for (tool,_) in repos_filename:
         for language in languages:
@@ -152,6 +183,9 @@ def get_programming_languages_repos(repos):
         language = repo.get("language",None) or "None"
 
 
+        if not (language in languages):
+            continue
+         
         tools = repo.get("tools_used") or []
 
 
@@ -229,3 +263,22 @@ def get_programming_languages_repos(repos):
     template = template.replace("(values)",values)
 
     return template
+
+
+def get_programming_languages_all(repos):
+  languages = list(set(map(lambda x: x["language"] or "None" , repos)))
+  
+  count = dict()
+
+  for repo in repos:
+      ##print(repo.get("name"))
+      language = repo.get("language",None) or "None"
+
+      new_count = count.get(language,0) + 1
+      count.update({language: new_count})
+  
+  languages = list(sorted(languages, key=lambda x: count.get(x,0),reverse=True))[0:10]
+
+  print(len(languages))
+
+  return get_programming_languages_repos(repos,languages)
