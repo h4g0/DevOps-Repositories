@@ -1,16 +1,16 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "A simple pie chart with embedded data.",
-    "data": {
-      "values": [
-        {"category": "Found tools", "value": 200447},
-        {"category": "Empty", "value": 412110}
-      ]
-    },
-    "mark": "arc",
-    "encoding": {
-      "theta": {"field": "value", "type": "quantitative"},
-      "color": {"field": "category", "type": "nominal"}
-    }
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A simple pie chart with embedded data.",
+  "data": {
+    "values": [
+      {"category": "Found tools", "value": 200447},
+      {"category": "No tools", "value": 365250},
+      {"category": "Empty repository", "value": 46860}
+    ]
+  },
+  "mark": "arc",
+  "encoding": {
+    "theta": {"field": "value", "type": "quantitative"},
+    "color": {"field": "category", "type": "nominal"}
   }
-  
+}

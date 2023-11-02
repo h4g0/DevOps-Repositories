@@ -4,7 +4,7 @@ import time
 from requests.structures import CaseInsensitiveDict
 from api import change_token, get_content_repositories, get_multiple_random_repositories, get_rate_limit, get_raw_file
 from db import DB
-from stats import get_programming_languages, get_programming_languages_all, get_programming_languages_repos, get_stats_repos_per_tool
+from stats import get_number_of_tools_distribution, get_programming_languages, get_programming_languages_all, get_programming_languages_repos, get_stats_repos_per_tool
 from tools import find_repos_tools, get_all_random_repositories_dates, get_repos_data_dates, get_total_repos_per_tool
 from transform_data import reduce_repositories
 from multiprocessing import Pool
@@ -85,7 +85,9 @@ def main():
 
     ##repos = myDB.get_random_processed_repositories(10000)
 
-    repos = myDB.get_processed_repositories()
+    repos = myDB.get_processed_repositories_with_tools()
+
+    print(len(repos))
 
     print(get_stats_repos_per_tool(repos))    
     ##get_rate_limit()

@@ -50,11 +50,17 @@ class DB:
         mycol = self.client.Repositories["random"]
         
         return list(mycol.find({ "$or": [{"processtools": None} , {"processtools": False}]}))
-    
+
+
     def get_processed_repositories(self):
         mycol = self.client.Repositories["random"]
         
         return list(mycol.find({ "processtools": True}))
+
+    def get_processed_repositories_with_tools(self):
+        mycol = self.client.Repositories["random"]
+        
+        return list(mycol.find({ "processtools": True, "tools_used": { "$not": {"$size": 0} }}))
     
     def get_random_processed_repositories(self,size):
         mycol = self.client.Repositories["random"]
