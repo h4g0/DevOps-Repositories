@@ -1,0 +1,23 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": { "values": [
+        {"language": "JavaScript","cicd":1,"people":1483789},
+      {"language": "JavaScript","cicd":2,"people":1450376}]},
+    "transform": [
+      {"calculate": "datum.cicd == 2 ? 'yes' : 'no'", "as": "CI/CD"}
+    ],
+    "mark": "bar",
+    "width": {"step": 17},
+    "encoding": {
+      "y": {
+        "aggregate": "sum", "field": "people",
+        "title": "",
+        "stack":  "normalize"
+      },
+      "x": {"field": "language"},
+      "color": {
+        "field": "CI/CD",
+        "scale": {"range": ["#675193", "#ca8861"]}
+      }
+    }
+  }

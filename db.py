@@ -57,6 +57,11 @@ class DB:
         
         return list(mycol.find({ "processtools": True}))
 
+    def get_processed_repositories_with_tool(self,tool):
+        mycol = self.client.Repositories["random"]
+        
+        return list(mycol.find({"$and": [{ "tools_used": tool }, { "processtools": True}]} ))
+
     def get_processed_repositories_with_tools(self):
         mycol = self.client.Repositories["random"]
         

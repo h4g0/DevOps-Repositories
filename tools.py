@@ -51,7 +51,8 @@ repos_filename = [("Agola","\.agola"),
                 ("Semaphore","\.semaphore\/semaphore\.yaml"),
                 ("TeamCity","\.teamcity"),
                 ("werf","werf\.yaml"),
-                ("Woodpecker CI", "\.woodpecker\.yml")]
+                ("Woodpecker CI", "\.woodpecker\.yml"),
+                ("GitHubActions","github\/workflows")]
 
 repos_code_yml = [("Codefresh","DaemonSet"),
                 ("Codefresh","StatefulSet"),
@@ -63,7 +64,6 @@ repos_code_yml = [("Codefresh","DaemonSet"),
                 ("GoCD","stages\:"),
                 ("Concourse","resources\:"),
                   ("Kubernetes","apiVersion\:"),
-                  ("GitHubActions","jobs\:"),
                   ("AWS CodePipeline","roleArn"),
                    ]
 
@@ -111,7 +111,6 @@ def check_tools(reponame,repos_code,extension):
     tools = set()
 
     for t in repos_code:
-        time.sleep(sleep_code)
         if len(get_content_repositories(t[1],reponame,extension)) > 0:
             tools.add(t[0])
 
