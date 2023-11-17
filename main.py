@@ -4,7 +4,7 @@ import time
 from requests.structures import CaseInsensitiveDict
 from api import change_token, get_content_repositories, get_multiple_random_repositories, get_rate_limit, get_raw_file
 from db import DB
-from stats import get_languages_cicd, get_languages_more_than_one_percent, get_map_tool_tool, get_number_of_tools_distribution, get_programming_languages, get_programming_languages_all, get_programming_languages_repos, get_stats_repos_per_tool, get_tools_language_cicd, get_tools_more_than_one_percent
+from stats import get_cicd_percent_per_year, get_language_number_of_tools_distribution, get_languages_cicd, get_languages_more_than_one_percent, get_map_tool_tool, get_number_of_tools_distribution, get_number_tools_per_year, get_programming_languages, get_programming_languages_all, get_programming_languages_repos, get_stats_repos_per_tool, get_tools_language_cicd, get_tools_more_than_one_percent
 from tools import find_repos_tools, get_all_random_repositories_dates, get_repos_data_dates, get_total_repos_per_tool
 from transform_data import reduce_repositories
 from multiprocessing import Pool
@@ -85,9 +85,72 @@ def main():
 
     ##repos = myDB.get_random_processed_repositories(10000)
 
-    repos = myDB.get_processed_repositories_with_tools()
+    ##repos = myDB.get_processed_repositories_with_tools()
 
-    print(get_map_tool_tool(repos))
+    ##print(get_map_tool_tool(repos))
+
+
+    """repos_filename = [("Agola","\.agola"),
+                    ("AppVeyor","appveyor\.yml"),
+                    ("ArgoCD","argo\-cd"),
+                    ("Bytebase","air\.toml"),
+                    ("Cartographer","cartographer\.yaml"),
+                    ("CircleCI","circleci"),
+                    ("Cloud 66 Skycap","cloud66"),
+                    ("Cloudbees Codeship","codeship\-services\.yml"),
+                    ("Devtron","devtron\-ci\.yaml"),
+                    ("Flipt","flipt\.yml"),
+                    ("GitLab","gitlab\-ci\.yml"),
+                    ("Google Cloud Build","cloudbuild\.yaml"),
+                    ("Helmwave","helmwave\.yml"),
+                    ("Travis","\.travis\.yml"),
+                    ("Jenkins","Jenkinsfile"),
+                    ("JenkinsX","jx\-requirements\.yml"),
+                    ("Keptn","charts\/keptn\/"),
+                    ("Liquibase","liquibase\.properties"),
+                    ("Mergify","mergify"),
+                    ("OctopusDeploy"," \.octopus"),
+                    ("OpenKruise","charts\/kruise\/"),
+                    ("OpsMx","charts\/isdargo\/"),
+                    ("Ortelius","component\.toml"),
+                    ("Screwdriver","screwdriver\.yaml"),
+                    ("Semaphore","\.semaphore\/semaphore\.yaml"),
+                    ("TeamCity","\.teamcity"),
+                    ("werf","werf\.yaml"),
+                    ("Woodpecker CI", "\.woodpecker\.yml"),
+                    ("GitHubActions","github\/workflows")]
+
+    repos_code_yml = [("Codefresh","DaemonSet"),
+                    ("XL Deploy","apiVersion\: \(xl-deploy\|xl\)"),
+                    ("Drone","kind\:"),
+                    ("Flagger","flagger"),
+                    ("Harness.io","featureFlags\:"),
+                    ("Flux","fluxcd"),
+                    ("GoCD","stages\:"),
+                    ("Concourse","resources\:"),
+                    ("Kubernetes","apiVersion\:"),
+                    ("AWS CodePipeline","roleArn"),
+                    ]
+
+
+    repos = []
+
+    repos.extend(repos_filename)
+    repos.extend(repos_code_yml)
+
+    print(len(repos))
+
+    for i in range(0,len(repos),2):
+        print(f"{repos[i][0]} & {repos[i+1][0]}\\\\")
+        print("\hline")"""
+
+    """f = open('Repositories.random-processed.json',encoding="utf8")
+
+    data = json.load(f)
+
+    data = list(filter(lambda x: len(x["tools_used"]) > 0, data))
+    print(get_language_number_of_tools_distribution(data))"""
+
     ##print(get_stats_repos_per_tool(repos))    
     ##get_rate_limit()
     ##process_repos_keys(myDB,20)

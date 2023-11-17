@@ -624,3 +624,233 @@ def get_map_tool_tool(repos):
     template = template.replace("(values)",values)
 
     return template
+
+
+
+
+def get_number_tools_per_year(repos):
+   
+    
+    count = dict()
+
+    for year in range(2012,2024):
+        for tools in range(1,14):
+            count.update({(year, tools) : 0 })
+
+    def get_year(date):
+      datestr = date.get("$date","")
+
+      return int(datestr[0:4])
+    
+    for repo in repos:
+        
+        snapchots = repo.get("snapshots",[])
+        
+
+        for snapchot in snapchots:
+          year = get_year(snapchot["date"])    
+          tools_repo = len(snapchot.get("tools", []))
+
+          if(year < 2012 or year > 2023):
+             continue
+          
+          if(tools_repo == 0):
+             continue
+          
+          count_t = count.get((year,tools_repo),0) + 1
+
+          count.update({(year,tools_repo): count_t })
+      
+
+    count_list = []
+
+    for key in count:
+        count_list.append((key, count.get(key)))
+    
+    ##filtered_list = filter(lambda x: x[1] > 1000, count_list)
+
+    ##sorted_list = sorted(filtered_list, key=lambda x: x[1],reverse=True)
+
+    values = ",".join(["{" + '"year": "' + str(x[0][0]) + '" , '  + '"tools": "' + str(x[0][1]) + '" , '  + '"people": ' +  str(x[1]) + "}" for x in count_list])
+
+
+    template =  '''{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": { "values": [
+       (values)
+    ]},
+    "mark": "bar",
+    "width": {"step": 17},
+    "encoding": {
+      "y": {
+        "aggregate": "sum", "field": "people",
+        "title": "",
+        "stack":  "normalize"
+      },
+      "x": {"field": "year"},
+      "color": {
+        "field": "tools",
+        "sort": ["1","2","3","4","5","6","7","8","9","10","11","12","13"],
+        "type": "nominal"
+      }
+      }
+    }
+  
+  '''
+
+    template = template.replace("(values)",values)
+
+    return template
+
+
+
+def get_cicd_percent_per_year(repos):
+   
+    
+    count = dict()
+
+    for year in range(2012,2024):
+        count.update({(year,"yes") : 0 })
+        count.update({(year,"no") : 0 })
+
+    def get_year(date):
+      
+
+      return int(date[0:4])
+    
+    for repo in repos:
+        
+    
+        year = get_year(repo["created_at"])    
+        tools_repo = len(repo.get("tools_used", []))
+
+        if(year < 2012 or year > 2023):
+            continue
+          
+        cicd = "yes"
+
+        if tools_repo == 0:
+            cicd = "no"
+          
+        count_t = count.get((year,cicd),0) + 1
+
+        count.update({(year,cicd): count_t })
+      
+
+    count_list = []
+
+    for key in count:
+        count_list.append((key, count.get(key)))
+    
+    ##filtered_list = filter(lambda x: x[1] > 1000, count_list)
+
+    ##sorted_list = sorted(filtered_list, key=lambda x: x[1],reverse=True)
+
+    values = ",".join(["{" + '"year": "' + str(x[0][0]) + '" , '  + '"cicd": "' + str(x[0][1]) + '" , '  + '"people": ' +  str(x[1]) + "}" for x in count_list])
+
+
+    template =  '''{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": { "values": [
+       (values)
+    ]},
+     "transform": [
+    {
+      "joinaggregate": [{"op": "sum", "field": "people", "as": "total"}],
+      "groupby": ["year"]
+    },
+    {"calculate": "datum.people / datum.total", "as": "fraction"}
+  ],
+  "encoding": {
+    "y": {
+      "aggregate": "sum",
+      "field": "people",
+      "title": "population",
+      "stack": "normalize"
+    },
+    "order": {"field": "cicd", "sort": "descending"},
+    "x": {"field": "year", "type": "ordinal"},
+    "color": {
+      "field": "cicd",
+      "type": "nominal",
+      "scale": {"range": ["#675193", "#ca8861"]}
+    }
+  },
+  "layer": [
+    {"mark": "bar"},
+    {
+      "mark": {"type": "text", "dx": 20, "dy": 0, "angle": 90},
+      "encoding": {
+        "color": {"value": "white"},
+        "text": {"field": "fraction", "type": "quantitative", "format": ".1%"}
+      }
+    }
+  ]
+    }
+  
+  '''
+
+    template = template.replace("(values)",values)
+
+    return template
+
+def get_language_number_of_tools_distribution(repos):
+   
+    languages = [x[0] for x in get_languages_more_than_one_percent(repos)]
+
+    count_list = []
+
+
+    for repo in repos:
+        
+        tools_repo = len(repo.get("tools_used", []))
+
+        if(tools_repo == 0):
+            continue
+
+        language = repo.get("language","None")
+
+        if not (language in languages):
+            continue
+        
+
+        count_list.append((language, tools_repo))
+
+
+       
+    ##filtered_list = filter(lambda x: x[1] > 1000, count_list)
+
+    ##sorted_list = sorted(filtered_list, key=lambda x: x[1],reverse=True)
+
+    values = ",".join(["{" + '"language": "' + str(x[0]) + '" , '  + '"#tools": ' + str(x[1]) + "}" for x in count_list])
+
+
+    template =  '''{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Distribution of Body Mass of Penguins",
+  "width": 400,
+  "height": 80,
+  "data": {
+   "values": [
+       (values)
+    ]
+  },
+  "mark": "area",
+  "transform": [
+    {
+      "density": "Body Mass (g)",
+      "groupby": ["Species"],
+      "extent": [2500, 6500]
+    }
+  ],
+  "encoding": {
+    "x": {"field": "value", "type": "quantitative", "title": "Body Mass (g)"},
+    "y": {"field": "density", "type": "quantitative", "stack": "zero"},
+    "row": {"field": "Species"}
+  }
+}
+'''
+
+    template = template.replace("(values)",values)
+
+    return template
