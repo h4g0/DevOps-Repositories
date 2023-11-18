@@ -148,7 +148,16 @@ def main():
 
     data = json.load(f)
 
-    data = list(filter(lambda x: len(x["tools_used"]) > 0, data))
+    count = 0
+
+    for repo in data:
+        tools = len(repo.get("tools_used",[]))
+
+        if(tools > 1):
+            count += 1
+    
+    print(count)"""
+    """data = list(filter(lambda x: len(x["tools_used"]) > 0, data))
     print(get_language_number_of_tools_distribution(data))"""
 
     ##print(get_stats_repos_per_tool(repos))    

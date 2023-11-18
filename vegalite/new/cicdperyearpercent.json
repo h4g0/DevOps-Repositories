@@ -1,0 +1,38 @@
+{
+    "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
+  "data": { "values": [
+         {"year": "2012" , "CI/CD": "yes" , "people": 12642},{"year": "2012" , "CI/CD": "no" , "people": 39453},{"year": "2013" , "CI/CD": "yes" , "people": 16230},{"year": "2013" , "CI/CD": "no" , "people": 35782},{"year": "2014" , "CI/CD": "yes" , "people": 18274},{"year": "2014" , "CI/CD": "no" , "people": 33825},{"year": "2015" , "CI/CD": "yes" , "people": 19317},{"year": "2015" , "CI/CD": "no" , "people": 32781},{"year": "2016" , "CI/CD": "yes" , "people": 19014},{"year": "2016" , "CI/CD": "no" , "people": 33233},{"year": "2017" , "CI/CD": "yes" , "people": 18065},{"year": "2017" , "CI/CD": "no" , "people": 34480},{"year": "2018" , "CI/CD": "yes" , "people": 17409},{"year": "2018" , "CI/CD": "no" , "people": 34743},{"year": "2019" , "CI/CD": "yes" , "people": 17678},{"year": "2019" , "CI/CD": "no" , "people": 34329},{"year": "2020" , "CI/CD": "yes" , "people": 18089},{"year": "2020" , "CI/CD": "no" , "people": 33992},{"year": "2021" , "CI/CD": "yes" , "people": 17214},{"year": "2021" , "CI/CD": "no" , "people": 34808},{"year": "2022" , "CI/CD": "yes" , "people": 16245},{"year": "2022" , "CI/CD": "no" , "people": 35630},{"year": "2023" , "CI/CD": "yes" , "people": 9846},{"year": "2023" , "CI/CD": "no" , "people": 29478}
+      ]},
+        "transform": [
+      {
+        "joinaggregate": [{"op": "sum", "field": "people", "as": "total"}],
+        "groupby": ["year"]
+      },
+      {"calculate": "datum.people / datum.total", "as": "fraction"}
+    ],
+    "encoding": {
+      "y": {
+        "aggregate": "sum",
+        "field": "people",
+        "title": "repositories",
+        "stack": "normalize"
+      },
+      "order": {"field": "CI/CD", "sort": "descending"},
+      "x": {"field": "year", "type": "ordinal"},
+      "color": {
+        "field": "CI/CD",
+        "type": "nominal",
+        "scale": {"range": ["#675193", "#ca8861"]}
+      }
+    },
+    "layer": [
+      {"mark": "bar"},
+      {
+        "mark": {"type": "text", "dx": 20, "dy": 0, "angle": 90},
+        "encoding": {
+          "color": {"value": "white"},
+          "text": {"field": "fraction", "type": "quantitative", "format": ".1%"}
+        }
+      }
+    ]
+  }

@@ -1,0 +1,25 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+       "width": "container",
+       "height": 250,
+      "data": {
+       "values": [
+         {"language": "JavaScript" , "count": 31576},{"language": "Python" , "count": 28184},{"language": "TypeScript" , "count": 17741},{"language": "Go" , "count": 15490},{"language": "Java" , "count": 11870},{"language": "C++" , "count": 10665},{"language": "PHP" , "count": 9528},{"language": "Rust" , "count": 8306},{"language": "C" , "count": 6821},{"language": "Ruby" , "count": 6363},{"language": "C#" , "count": 5856},{"language": "Shell" , "count": 4185},{"language": "HTML" , "count": 3598},{"language": "Swift" , "count": 3572},{"language": "Kotlin" , "count": 3058},{"language": "Jupyter Notebook" , "count": 2123}
+       ]
+     },
+       "mark": "bar",
+       "encoding": {
+         "x": {"field": "language", "type": "ordinal","sort": "-y"},
+         "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative"},
+       },
+      "layer": [{
+       "mark": "bar"
+     }, {
+         "mark": {"type": "text", "dx": -20, "dy": 0, "angle": 90},
+   
+       "encoding": {
+         "text": {"field": "count", "type": "quantitative","dx": 20, "dy": 0, "angle": 90}
+       }
+     }]
+   }
+   

@@ -1,0 +1,39 @@
+{
+    "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
+  "data": { "values": [
+     {"language": "Python" , "CI/CD": "no" , "people": 74109},{"language": "Python" , "CI/CD": "yes" , "people": 28184},{"language": "JavaScript" , "CI/CD": "no" , "people": 57540},{"language": "JavaScript" , "CI/CD": "yes" , "people": 31576},{"language": "PHP" , "CI/CD": "no" , "people": 11267},{"language": "PHP" , "CI/CD": "yes" , "people": 9528},{"language": "Swift" , "CI/CD": "no" , "people": 6417},{"language": "Swift" , "CI/CD": "yes" , "people": 3572},{"language": "TypeScript" , "CI/CD": "no" , "people": 13344},{"language": "TypeScript" , "CI/CD": "yes" , "people": 17741},{"language": "C++" , "CI/CD": "no" , "people": 22291},{"language": "C++" , "CI/CD": "yes" , "people": 10665},{"language": "Go" , "CI/CD": "no" , "people": 10030},{"language": "Go" , "CI/CD": "yes" , "people": 15490},{"language": "Rust" , "CI/CD": "no" , "people": 3830},{"language": "Rust" , "CI/CD": "yes" , "people": 8306},{"language": "C#" , "CI/CD": "no" , "people": 15247},{"language": "C#" , "CI/CD": "yes" , "people": 5856},{"language": "Java" , "CI/CD": "no" , "people": 28450},{"language": "Java" , "CI/CD": "yes" , "people": 11870},{"language": "C" , "CI/CD": "no" , "people": 18248},{"language": "C" , "CI/CD": "yes" , "people": 6821},{"language": "HTML" , "CI/CD": "no" , "people": 12311},{"language": "HTML" , "CI/CD": "yes" , "people": 3598},{"language": "Shell" , "CI/CD": "no" , "people": 12072},{"language": "Shell" , "CI/CD": "yes" , "people": 4185},{"language": "Ruby" , "CI/CD": "no" , "people": 5723},{"language": "Ruby" , "CI/CD": "yes" , "people": 6363},{"language": "Kotlin" , "CI/CD": "no" , "people": 4152},{"language": "Kotlin" , "CI/CD": "yes" , "people": 3058},{"language": "Jupyter Notebook" , "CI/CD": "no" , "people": 11586},{"language": "Jupyter Notebook" , "CI/CD": "yes" , "people": 2123}
+  ]},
+        "transform": [
+      {
+        "joinaggregate": [{"op": "sum", "field": "people", "as": "total"}],
+        "groupby": ["language"]
+      },
+      {"calculate": "datum.people / datum.total", "as": "fraction"}
+    ],
+    "encoding": {
+      "y": {
+        "aggregate": "sum",
+        "field": "people",
+        "title": "repositories",
+        "stack": "normalize"
+      },
+      "order": {"field": "CI/CD", "sort": "descending"},
+      "x": {"field": "language", "type": "ordinal","sort": ["JavaScript","Python","TypeScript","Go","Java","C++","PHP","Rust","C","Ruby","C#","Shell","HTML","Swift","Kotlin","Jupyter Notebook"],},
+      "color": {
+        "field": "CI/CD",
+        "type": "nominal",
+          
+        "scale": {"range": ["#675193", "#ca8861"]}
+      }
+    },
+    "layer": [
+      {"mark": "bar"},
+      {
+        "mark": {"type": "text", "dx": 20, "dy": 0, "angle": 90},
+        "encoding": {
+          "color": {"value": "white"},
+          "text": {"field": "fraction", "type": "quantitative", "format": ".1%"}
+        }
+      }
+    ]
+  }

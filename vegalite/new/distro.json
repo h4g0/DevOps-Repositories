@@ -1,0 +1,25 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "height": 250,
+    "data": {
+      "values": [
+        {"#tools": "1" , "count": 159755},{"#tools": "4" , "count": 3530},{"#tools": "2" , "count": 26502},{"#tools": "3" , "count": 7064},{"#tools": "5" , "count": 1997},{"#tools": "6" , "count": 908},{"#tools": "7" , "count": 373},{"#tools": "9" , "count": 95},{"#tools": "8" , "count": 189},{"#tools": "10" , "count": 23},{"#tools": "12" , "count": 1},{"#tools": "11" , "count": 9},{"#tools": "13" , "count": 1}
+      ]
+    },
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "#tools", "type": "ordinal","sort": "-y"},
+      "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative"},
+    },
+     "layer": [{
+      "mark": "bar"
+    }, {
+        "mark": {"type": "text", "dx": -20, "dy": 0, "angle": 90},
+  
+      "encoding": {
+        "text": {"field": "count", "type": "quantitative","dx": 20, "dy": 0, "angle": 90}
+      }
+    }]
+  }
+  
