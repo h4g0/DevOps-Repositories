@@ -1,0 +1,23 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": { "values": [
+       {"language": "Python" , "cicd": 1 , "people": 24114},{"language": "Python" , "cicd": 2 , "people": 4070},{"language": "JavaScript" , "cicd": 1 , "people": 28083},{"language": "JavaScript" , "cicd": 2 , "people": 3493},{"language": "Jupyter Notebook" , "cicd": 1 , "people": 1763},{"language": "Jupyter Notebook" , "cicd": 2 , "people": 360},{"language": "Go" , "cicd": 1 , "people": 11298},{"language": "Go" , "cicd": 2 , "people": 4192},{"language": "Rust" , "cicd": 1 , "people": 7323},{"language": "Rust" , "cicd": 2 , "people": 983},{"language": "Objective-C" , "cicd": 1 , "people": 1572},{"language": "Objective-C" , "cicd": 2 , "people": 76},{"language": "PHP" , "cicd": 1 , "people": 8699},{"language": "PHP" , "cicd": 2 , "people": 829},{"language": "HTML" , "cicd": 1 , "people": 3063},{"language": "HTML" , "cicd": 2 , "people": 535},{"language": "Swift" , "cicd": 1 , "people": 3350},{"language": "Swift" , "cicd": 2 , "people": 222},{"language": "Java" , "cicd": 1 , "people": 9824},{"language": "Java" , "cicd": 2 , "people": 2046},{"language": "TypeScript" , "cicd": 1 , "people": 15865},{"language": "TypeScript" , "cicd": 2 , "people": 1876},{"language": "CSS" , "cicd": 1 , "people": 1316},{"language": "CSS" , "cicd": 2 , "people": 170},{"language": "Shell" , "cicd": 1 , "people": 3266},{"language": "Shell" , "cicd": 2 , "people": 919},{"language": "C#" , "cicd": 1 , "people": 4987},{"language": "C#" , "cicd": 2 , "people": 869},{"language": "C++" , "cicd": 1 , "people": 7794},{"language": "C++" , "cicd": 2 , "people": 2871},{"language": "C" , "cicd": 1 , "people": 5143},{"language": "C" , "cicd": 2 , "people": 1678},{"language": "Kotlin" , "cicd": 1 , "people": 2782},{"language": "Kotlin" , "cicd": 2 , "people": 276},{"language": "Ruby" , "cicd": 1 , "people": 5758},{"language": "Ruby" , "cicd": 2 , "people": 605}
+    ]},
+     "transform": [
+      {"calculate": "datum.cicd == 2 ? 'yes' : 'no'", "as": "Several CI/CD tools"}
+    ],
+    "mark": "bar",
+    "width": {"step": 17},
+    "encoding": {
+      "y": {
+        "aggregate": "sum", "field": "people",
+        "title": "",
+        "stack":  "normalize"
+      },
+      "x": {"field": "language"},
+      "color": {
+        "field": "Several CI/CD tools",
+        "scale": {"range": ["#675193", "#ca8861"]}
+      }
+    }
+  }

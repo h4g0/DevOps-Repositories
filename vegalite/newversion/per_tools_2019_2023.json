@@ -1,0 +1,16 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A simple bar chart with embedded data.",
+    "data": {
+      "values": [
+        {"a": "GitHubActions", "b": 488.58}, {"a": "Travis", "b": 55.39}, {"a": "AppVeyor", "b": 86.68},{"a": "CircleCI", "b": 88.17}, {"a": "Concourse", "b":  198.28}, {"a": "Drone","b": 187.5},{"a": "Kubernetes","b":  186.1},{"a": "GitLab","b": 145.93},{"a": "GoCD","b": 166.4},{"a": "Jenkins","b": 164.36}
+      ]
+    },
+      "width": {"step": 100},
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},
+      
+      "y": {"field": "b", "type": "quantitative"}
+    }
+  }  

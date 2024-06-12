@@ -1,0 +1,17 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A simple bar chart with embedded data.",
+    "data": {
+      "values": [
+        {"a": "Python", "b": 16.65}, {"a": "JavaScript", "b": 16.01}, {"a": "PHP", "b": 4.84},{"a": "Swift", "b": 1.51}, {"a": "TypeScript", "b": 8.78}, {"a": "C++","b": 7.63},{"a": "Go","b": 13.25},{"a": "Rust","b": 4.45},{"a": "C#","b": 3.43},{"a": "Java","b": 7.68},{"a": "C","b": 4.76},{"a": "HTML","b":  2.06},{"a": "Shell","b":  2.78},{"a": "Ruby","b": 3.59},
+        {"a": "Kotlin","b": 1.49},{"a": "Jupyter Notebook","b": 1.08}
+      ]
+    },
+      "width": {"step": 100},
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},
+      
+      "y": {"field": "b", "type": "quantitative"}
+    }
+  }

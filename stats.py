@@ -33,7 +33,7 @@ def get_stats_repos_per_tool(repos):
   },
   "encoding": {
     "x": {"field": "tool", "type": "ordinal"},
-    "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative"},
+    "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative", "stack": false},
     "fillOpacity": {
       "condition": {"param": "select", "value": 1},
       "value": 0.3
@@ -97,7 +97,7 @@ def get_programming_languages(repos):
   },
   "encoding": {
     "x": {"field": "tool", "type": "ordinal", "sort": "-y"},
-    "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative"},
+    "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative", "stack": false},
     "fillOpacity": {
       "condition": {"param": "select", "value": 1},
       "value": 0.3
@@ -298,7 +298,7 @@ def get_number_of_tools_distribution(repos):
   },
   "encoding": {
     "x": {"field": "number of tools", "type": "ordinal", "sort": "-y"},
-    "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative"},
+    "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative","stack": false},
     "fillOpacity": {
       "condition": {"param": "select", "value": 1},
       "value": 0.3
@@ -854,3 +854,460 @@ def get_language_number_of_tools_distribution(repos):
     template = template.replace("(values)",values)
 
     return template
+
+
+def get_languages_cicd_morethanone(repos,reposcicd):
+   
+    languages = [ x[0] for x in get_languages_more_than_one_percent(reposcicd) ]
+
+    count = dict()
+
+    for language in languages:
+        count.update({(language, 1) : 0 })
+        count.update({(language, 2) : 0 })
+
+    for repo in repos:
+        
+        tools_repo = repo.get("tools_used", [])
+
+        language = repo.get("language","None")
+
+        if not (language in languages):
+          continue
+
+        if(len(tools_repo) == 1):
+            count_t = count.get((language,1),0) + 1
+
+            count.update({(language,1): count_t })
+        
+        if(len(tools_repo) > 1):
+            count_t = count.get((language,2),0) + 1
+
+            count.update({(language,2): count_t })
+        
+
+    count_list = []
+
+    for key in count:
+        count_list.append((key, count.get(key)))
+    
+    ##filtered_list = filter(lambda x: x[1] > 1000, count_list)
+
+    ##sorted_list = sorted(filtered_list, key=lambda x: x[1],reverse=True)
+
+    values = ",".join(["{" + '"language": "' + str(x[0][0]) + '" , '  + '"cicd": ' + str(x[0][1]) + ' , '  + '"people": ' +  str(x[1]) + "}" for x in count_list])
+
+
+    template =  '''{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": { "values": [
+       (values)
+    ]},
+     "transform": [
+      {"calculate": "datum.cicd == 2 ? 'yes' : 'no'", "as": "Several CI/CD tools"}
+    ],
+    "mark": "bar",
+    "width": {"step": 17},
+    "encoding": {
+      "y": {
+        "aggregate": "sum", "field": "people",
+        "title": "",
+        "stack":  "normalize"
+      },
+      "x": {"field": "language"},
+      "color": {
+        "field": "CI/CD",
+        "scale": {"range": ["#675193", "#ca8861"]}
+      }
+    }
+  }
+  '''
+
+    template = template.replace("(values)",values)
+
+    return template
+
+
+
+
+def get_programming_languages_repos_normalized(repos):
+    
+    count = dict()
+
+    languages = [x[0] for x in get_languages_more_than_one_percent(repos)]
+
+    tools_one_percent = [x[0] for x in get_tools_more_than_one_percent(repos)]
+    print(len(tools_one_percent))
+    
+    for repo in repos:
+        ##print(repo.get("name"))
+        language = repo.get("language",None) or "None"
+
+
+        if not (language in languages):
+            continue
+          
+      
+        tools = repo.get("tools_used") or []
+
+
+        for tool in tools:
+            
+            if not (tool in tools_one_percent):
+              continue
+
+            new_count =  count.get((tool,language),0) + 1
+            count.update({(tool,language): new_count})
+
+    count_list = []
+
+    for key in count:
+        count_list.append((key,count.get(key,0)))
+
+    sorted_list = sorted(count_list, key=lambda x: x[1],reverse=True)
+
+    def transform_value(x,sorted_list):
+      total_x = sum( [ z[1] for z in list(filter(lambda y: x[0][1] == y[0][1],sorted_list)) ])
+
+      return '{"language": "' + x[0][1] + '" , "tool": "' + x[0][0] + '" , "count": ' + str((x[1] / total_x)) + '}'
+
+    values = ",\n".join([transform_value(x,sorted_list) for x in sorted_list])
+
+
+    template =  '''{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      (values)
+    ]
+  },
+  "params": [{"name": "highlight", "select": "point"}],
+  "mark": {"type": "rect", "strokeWidth": 2},
+  "encoding": {
+    "y": {
+      "field": "language",
+      "type": "nominal"
+    },
+    "x": {
+      "field": "tool",
+      "type": "nominal"
+    },
+    "fill": {
+      "field": "count",
+      "type": "quantitative"
+    },
+    "stroke": {
+      "condition": {
+        "param": "highlight",
+        "empty": false,
+        "value": "black"
+      },
+      "value": null
+    },
+    "opacity": {
+      "condition": {"param": "highlight", "value": 1},
+      "value": 0.5
+    },
+    "order": {"condition": {"param": "highlight", "value": 1}, "value": 0}
+  },
+  "config": {
+    "scale": {
+      "bandPaddingInner": 0,
+      "bandPaddingOuter": 0
+    },
+    "view": {"step": 40},
+    "range": {
+      "ramp": {
+        "scheme": "yellowgreenblue"
+      }
+    },
+    "axis": {
+      "domain": false
+    }
+  }
+}
+'''
+
+    template = template.replace("(values)",values)
+
+    return template
+
+def percentage_tools_2019_2023(repos):
+    
+    tools_one_percent = ["GitHubActions","Travis","AppVeyor","CircleCI","Concourse","Drone","Kubernetes","GitLab","GoCD","Jenkins"]
+
+    print(len(repos))
+    def get_year(date):
+      datestr = date.get("$date","")
+
+      return int(datestr[0:4])
+    
+    count = dict()
+
+    t_repos = 0
+    for repo in repos:
+        snaps = repo["snapshots"]
+        
+        if len(snaps) < 2:
+            continue
+        
+        creation_year = 2019
+        end_year = 2023
+
+        first_snap = snaps[0]
+        last_snap = snaps[len(snaps) - 1]
+
+        year1 = get_year(first_snap.get("date",""))
+        year2 = get_year(last_snap.get("date",""))
+
+        for s in snaps:
+            if creation_year == get_year(s.get("date","")):
+                first_snap = s
+
+
+        
+        tools_year1_repo = first_snap.get("tools",[])
+        tools_year2_repo = last_snap.get("tools",[])
+
+      
+        if year1 <= creation_year and year2 == end_year:
+            for tool in tools_one_percent:
+                if tool in tools_year1_repo:
+                    count.update({(tool,creation_year): count.get((tool,creation_year), 0) + 1})
+                if tool in tools_year2_repo:
+                    count.update({(tool,end_year): count.get((tool,end_year), 0) + 1})
+            t_repos += 1
+    print(t_repos)
+
+    print(f"Tool / Count {creation_year} / Count {end_year} / Percentage 2023 2019")
+
+    for tool in tools_one_percent:
+        tool_c_2019 = count.get((tool,creation_year), 0)
+        tool_c_2023 = count.get((tool,end_year), 0)
+        perc = round(tool_c_2023 / tool_c_2019 * 100,2)
+        print(f"{tool} / {tool_c_2019} / {tool_c_2023} / {perc}")
+
+
+def migrations_programming_language(repos,languages):
+    
+    languages_one_percent = ['Python', 'JavaScript', 'PHP', 'Swift', 'TypeScript', 'C++', 'Go', 'Rust', 'C#', 'Java', 'C', 'HTML', 'Shell', 'Ruby', 'Kotlin', 'Jupyter Notebook']
+    migrations = dict()
+
+    def get_year(date):
+      datestr = date.get("$date","")
+
+      return int(datestr[0:4])
+    
+
+    for repo in repos:
+        snaps = repo["snapshots"]
+        
+        if len(snaps) < 2:
+            continue
+
+        lang = languages.get(repo.get('repo_full_name',None))
+
+        last_tool = snaps[0].get("tools",[])
+
+        if lang in languages_one_percent:
+          for s in snaps[1:]:
+              tools = s.get("tools",[])
+
+              for t in tools:
+                  if not (t in last_tool):
+                      migrations.update({lang: migrations.get(lang,0) + 1})
+                      continue
+                  
+              last_tool = tools
+
+              ##year1 = get_year(first_snap.get("date",""))
+        
+
+    total_migrations = sum(migrations.values())
+
+    print(f"Programming language / Migrations / Percentage")
+
+    for p in languages_one_percent:
+        m_c = migrations.get(p,0)
+        p_c = round(m_c / total_migrations * 100, 2)
+
+        print(f"{p} / {m_c} / {p_c}")
+
+
+def migrations_tools(repos):
+    
+    tools_one_percent = ["GitHubActions","Travis","AppVeyor","CircleCI","Concourse","Drone","Kubernetes","GitLab","GoCD","Jenkins"]
+    migrations = dict()
+
+    def get_year(date):
+      datestr = date.get("$date","")
+
+      return int(datestr[0:4])
+    
+
+    for repo in repos:
+        snaps = repo["snapshots"]
+        
+        if len(snaps) < 2:
+            continue
+
+
+        last_tool = snaps[0].get("tools",[])
+
+        for s in snaps[1:]:
+              tools = s.get("tools",[])
+
+              if (len(last_tool) != 0):
+                for t in tools:
+                    if not (t in last_tool):
+                        if t in tools_one_percent:
+                          migrations.update({t: migrations.get(t,0) + 1})
+                          continue
+                    
+              last_tool = tools
+
+              ##year1 = get_year(first_snap.get("date",""))
+        
+
+      
+    total_migrations = sum(migrations.values())
+
+    print(f"Tool / Migrations / Percentage")
+
+    for t in tools_one_percent:
+        m_c = migrations.get(t,0)
+        m_p = round(m_c / total_migrations * 100, 2)
+        print(f"{t} / {m_c} / {m_p}")
+
+def migrations_travis(repos):
+    
+    migrations = dict()
+  
+    def get_year(date):
+      datestr = date.get("$date","")
+
+      return int(datestr[0:4])
+                 
+    for repo in repos:
+        snaps = repo["snapshots"]
+        
+        if len(snaps) < 2:
+            continue
+
+
+        last_tool = snaps[0].get("tools",[])
+
+        for s in snaps[1:]:
+              tools = s.get("tools",[])
+              year = get_year(s.get("date",""))
+
+              if (len(last_tool) != 0):
+                if "GitHubActions" in tools:
+                    if not ("GitHubActions" in last_tool):
+                          migrations.update({year: migrations.get(year,0) + 1})
+                          continue
+                    
+              last_tool = tools
+
+              ##year1 = get_year(first_snap.get("date",""))
+        
+
+      
+
+    print(f"Year / Migrations")
+
+    for year in range(2012,2024):
+        m_c = migrations.get(year,0)
+       
+        print(f"{year} / {m_c}")
+
+
+def migrations_programming_languages_to_from(repos,languages):
+    
+    languages_one_percent = ['Python', 'JavaScript', 'PHP', 'Swift', 'TypeScript', 'C++', 'Go', 'Rust', 'C#', 'Java', 'C', 'HTML', 'Shell', 'Ruby', 'Kotlin', 'Jupyter Notebook']
+    migrations = dict()
+
+    def get_year(date):
+      datestr = date.get("$date","")
+
+      return int(datestr[0:4])
+    
+
+    for repo in repos:
+        snaps = repo["snapshots"]
+        
+        if len(snaps) < 2:
+            continue
+
+        lang = languages.get(repo.get('repo_full_name',None))
+
+        last_tool = snaps[0].get("tools",[])
+
+        if lang in languages_one_percent:
+          for s in snaps[1:]:
+              tools = s.get("tools",[])
+
+              for t in tools:
+                  if not (t in last_tool):
+                      migrations.update({(lang, t) : migrations.get((lang,t),0) + 1})
+                      continue
+                  
+              last_tool = tools
+
+              ##year1 = get_year(first_snap.get("date",""))
+        
+
+    total_migrations = sum(migrations.values())
+    sorted_migrations = sorted(migrations.items(), key = lambda x: x[1], reverse=True)[0:20]
+    print(f"Programming language / Migrations / Percentage")
+
+    for p in sorted_migrations:
+        
+
+        print(f"{p[0]} / {p[1]}")
+
+
+def migrations_tools_time_to_fall(repos):
+    
+    tools_one_percent = ["GitHubActions","Travis","AppVeyor","CircleCI","Concourse","Drone","Kubernetes","GitLab","GoCD","Jenkins"]
+    migrations = dict()
+
+    def get_year(date):
+      datestr = date.get("$date","")
+
+      return int(datestr[0:4])
+    
+
+    for repo in repos:
+        snaps = repo["snapshots"]
+        
+        if len(snaps) < 2:
+            continue
+
+
+        last_tool = snaps[0].get("tools",[])
+
+        for s in snaps[1:]:
+              tools = s.get("tools",[])
+              year = get_year(s.get("date",""))
+
+              if (len(last_tool) != 0):
+                for t in tools:
+                    migrations.update({(t,year): migrations.get((t,year),0) + 1})
+                    
+              last_tool = tools
+
+              ##year1 = get_year(first_snap.get("date",""))
+        
+
+      
+    total_migrations = sum(migrations.values())
+
+    print(f"Tool / Migrations / Percentage")
+
+    for t in tools_one_percent:
+        tools = sorted(filter(lambda x: x[0][0] == t, migrations.items()), key = lambda x: x[1], reverse=True)
+        
+        m_c = migrations.get(t,0)
+        m_p = tools[0][0][1]
+        print(f"{t} / {m_p}")

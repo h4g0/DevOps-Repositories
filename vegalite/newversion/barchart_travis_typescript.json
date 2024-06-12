@@ -1,0 +1,19 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A simple bar chart with embedded data.",
+    "data": {
+      "values": [
+        {"a": "2012", "b": 0}, {"a": "2013", "b": 0}, {"a": "2014", "b": 0},
+        {"a": "2015", "b": 1}, {"a": "2016", "b": 11}, {"a": "2017", "b": 32},
+        {"a": "2018", "b": 85}, {"a": "2019", "b": 228}, {"a": "2020", "b": 295},{"a": "2021", "b": 218}, {"a": "2022", "b": 158}, {"a": "2023","b": 143}
+      ]
+    },
+      "width": {"step": 30},
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},
+      
+      "y": {"field": "b", "type": "quantitative"}
+    }
+  }
+  
