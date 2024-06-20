@@ -156,12 +156,12 @@ def save_repos_entreprise_history():
 
 def main():
     
-    f = open('Repositories.entreprise-repos2.json',encoding="utf8")
+    f = open('Repositories.entreprise_repos.json',encoding="utf8")
 
     ##f = open('Repositories.entreprise_tools_history.json',encoding="utf8")
 
     data2 = json.load(f)
 
-    print(get_number_tools_per_year(data2))
+    print(get_language_number_of_tools_distribution(data2))
 
 main()
