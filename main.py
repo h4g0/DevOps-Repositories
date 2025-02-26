@@ -154,14 +154,34 @@ def save_repos_entreprise_history():
     with open('data.json', 'w') as f:
         json.dump(data2, f)
 
+def top_enter(data):
+    enterprises = dict()
+    for proj in data:
+        enter = proj["owner"]
+        enter_C = enterprises.get(enter,0) + 1
+        enterprises.update({enter: enter_C})
+    
+    enterprises = sorted(list(enterprises.items()),key=lambda x: x[1],reverse=True)
+
+    return enterprises
+
 def main():
     
-    f = open('Repositories.entreprise_repos.json',encoding="utf8")
+    f = open('Repositories.random-processed.json',encoding="utf8")
+    ##f = open('Repositories.entreprise_repos.json',encoding="utf8")
+    #f = open('Repositories.repo_tools_history.json',encoding="utf8")
+    #f = open('Repositories.entreprise_tools_history.json',encoding="utf8")
 
-    ##f = open('Repositories.entreprise_tools_history.json',encoding="utf8")
 
     data2 = json.load(f)
 
-    print(get_language_number_of_tools_distribution(data2))
+    #top = top_enter(data2)[0:10]
+
+    #for x in top:
+        #print(f"{x[0]} & {x[1]} \\\\")
+        #print("\hline")
+    ##data2 = list(filter(lambda x: len(x["tools_used"]) > 0, data2))
+    #print(len(data2))
+    ##print(get_language_number_of_tools_distribution(data2))
 
 main()

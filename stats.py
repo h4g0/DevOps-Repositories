@@ -798,7 +798,7 @@ def get_language_number_of_tools_distribution(repos):
    
     languages = [x[0] for x in get_languages_more_than_one_percent(repos)]
 
-    count_list = []
+    count_list = dict()
 
 
     for repo in repos:
@@ -813,42 +813,39 @@ def get_language_number_of_tools_distribution(repos):
         if not (language in languages):
             continue
         
+        count_t = count_list.get(language,[])
+        count_t.append(tools_repo)
+        
+        count_list.update({language: count_t })
 
-        count_list.append((language, tools_repo))
 
 
-       
+    count_list = [(k, round(sum(v) / len(v),2)) for k, v in count_list.items()]
+
     ##filtered_list = filter(lambda x: x[1] > 1000, count_list)
 
     ##sorted_list = sorted(filtered_list, key=lambda x: x[1],reverse=True)
 
-    values = ",".join(["{" + '"language": "' + str(x[0]) + '" , '  + '"#tools": ' + str(x[1]) + "}" for x in count_list])
+    values = ",".join(["{" + '"language": "' + str(x[0]) + '" , '  + '"average #tools": ' + str(x[1]) + "}" for x in count_list])
 
 
     template =  '''{
+  {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Distribution of Body Mass of Penguins",
-  "width": 400,
-  "height": 80,
+  "description": "A bar chart with highlighting on hover and selecting on click. (Inspired by Tableau's interaction style.)",
   "data": {
-   "values": [
-       (values)
-    ]
+    "values": [
+          (values)
+        ]
   },
-  "mark": "area",
-  "transform": [
-    {
-      "density": "Body Mass (g)",
-      "groupby": ["Species"],
-      "extent": [2500, 6500]
-    }
-  ],
+  "mark": "bar",
   "encoding": {
-    "x": {"field": "value", "type": "quantitative", "title": "Body Mass (g)"},
-    "y": {"field": "density", "type": "quantitative", "stack": "zero"},
-    "row": {"field": "Species"}
+    "x": {"field": "language", "type": "ordinal", "sort": "-y"},
+    "y": {"field": "average #tools", "type": "quantitative", "stack": false}
   }
+  
 }
+
 '''
 
     template = template.replace("(values)",values)
