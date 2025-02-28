@@ -1,0 +1,17 @@
+
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A bar chart with highlighting on hover and selecting on click. (Inspired by Tableau's interaction style.)",
+    "data": {
+      "values": [
+            {"language": "Python" , "average #tools": 1.2},{"language": "JavaScript" , "average #tools": 1.14},{"language": "PHP" , "average #tools": 1.11},{"language": "Swift" , "average #tools": 1.07},{"language": "TypeScript" , "average #tools": 1.15},{"language": "C++" , "average #tools": 1.37},{"language": "Go" , "average #tools": 1.6},{"language": "Rust" , "average #tools": 1.16},{"language": "C#" , "average #tools": 1.2},{"language": "Java" , "average #tools": 1.25},{"language": "C" , "average #tools": 1.33},{"language": "HTML" , "average #tools": 1.23},{"language": "Shell" , "average #tools": 1.46},{"language": "Ruby" , "average #tools": 1.12},{"language": "Kotlin" , "average #tools": 1.12},{"language": "Jupyter Notebook" , "average #tools": 1.25}
+          ]
+    },
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "language", "type": "ordinal", "sort": "-y"},
+      "y": {"field": "average #tools","title": "average #technologies", "type": "quantitative", "stack": false}
+    }
+    
+  }
+  

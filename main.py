@@ -8,8 +8,13 @@ from stats import get_cicd_percent_per_year, get_language_number_of_tools_distri
 from tools import find_repos_tools, get_all_random_repositories_dates, get_repos_data_dates, get_total_repos_per_tool
 from transform_data import reduce_repositories
 from multiprocessing import Pool
-from keys import key,keyhugo2,keyhugo3,keyjacome
+from keys import key
+from run_all_stats import run_all_stats_and_save
+
 import csv
+import argparse
+
+
 
 def pretty_json(item):
     print(json.dumps(item, indent=2))
@@ -31,10 +36,11 @@ def get_tool_usage_statistics(myDB):
 
     print(get_total_repos_per_tool(repos))
 
-def process_repositories(myDB,count):
+def process_repositories(myDB):
         
-    repos = myDB.get_random_unprocessed_repositorioes(count)
-    
+    #repos = myDB.get_random_unprocessed_repositorioes(count)
+    repos = myDB.get_repositories()
+
     find_repos_tools(myDB,repos)
 
 def test_time_per_repo(myDB,number_of_repos):
@@ -166,22 +172,46 @@ def top_enter(data):
     return enterprises
 
 def main():
+    parser = argparse.ArgumentParser(description="Command-line tool for repository management.")
+
+    # Define subcommands
+    subparsers = parser.add_subparsers(dest='command', required=True)
+
+    # Subcommand for getting random repositories
+    get_random_parser = subparsers.add_parser('get_random', help='Get random repositories')
+    get_random_parser.add_argument('start', type=str, help='Start date')
+    get_random_parser.add_argument('end', type=str, help='End date')
+    get_random_parser.add_argument('stars', type=int, help='Minimum stars')
+
+    # Subcommand for processing repositories
+    process_parser = subparsers.add_parser('process', help='Process repositories')
+
+    # Subcommand for running stats and saving
+    stats_parser = subparsers.add_parser('run_stats', help='Run statistics and save results')
+    stats_parser.add_argument('dataset', type=str, help='Dataset name')
+    stats_parser.add_argument('stats_folder', type=str, help='Folder to save statistics')
+
+    # Parse the arguments
+    args = parser.parse_args()
+
+    # Call the appropriate function based on the command
+    if args.command == 'get_random':
+        get_all_random_repositories_dates(args.start, args.end, args.stars)
+    elif args.command == 'process':
+        process_repositories(DB)
+    elif args.command == 'run_stats':
+        run_all_stats_and_save(args.dataset, args.stats_folder)
+
+#def main():
     
-    f = open('Repositories.random-processed.json',encoding="utf8")
+    #f = open('Repositories.random-processed.json',encoding="utf8")
     ##f = open('Repositories.entreprise_repos.json',encoding="utf8")
     #f = open('Repositories.repo_tools_history.json',encoding="utf8")
     #f = open('Repositories.entreprise_tools_history.json',encoding="utf8")
 
 
-    data2 = json.load(f)
+    #data2 = json.load(f)
 
-    #top = top_enter(data2)[0:10]
-
-    #for x in top:
-        #print(f"{x[0]} & {x[1]} \\\\")
-        #print("\hline")
-    ##data2 = list(filter(lambda x: len(x["tools_used"]) > 0, data2))
-    #print(len(data2))
-    ##print(get_language_number_of_tools_distribution(data2))
+   
 
 main()

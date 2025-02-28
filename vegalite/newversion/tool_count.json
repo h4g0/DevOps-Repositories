@@ -1,0 +1,33 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A simple bar chart with embedded data.", 
+    "data": {
+              "values": [{"tool": "Jenkins" , "count": 2724},{"tool": "GoCD" , "count": 3566},{"tool": "GitLab" , "count": 3845},{"tool": "Kubernetes" , "count": 5322},{"tool": "Drone" , "count": 6141},{"tool": "Concourse" , "count": 7033},{"tool": "CircleCI" , "count": 9258},{"tool": "AppVeyor" , "count": 10758},{"tool": "Travis" , "count": 77528},{"tool": "GitHubActions" , "count": 115705}]
+  
+    },
+  
+    "encoding": {
+      "x": {"field": "tool", "title": "technology", "type": "ordinal","sort": "-y"},
+      "y": {"field": "count", "scale": {"type": "log", "base": 10}, "type": "quantitative", "stack": false  
+  },
+  
+  
+    },
+  
+    "config": {
+      "scale": {
+        "bandPaddingInner": 0.2
+      }
+    },
+  
+      "layer": [{
+         "mark": "bar"
+       }, {
+           "mark": {"type": "text", "dx": -20, "dy": 0, "angle": 90},
+     
+         "encoding": {
+           "text": {"field": "count", "type": "quantitative"}
+         }
+       }]
+  }
+  
