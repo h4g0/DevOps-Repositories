@@ -56,7 +56,7 @@ def process_repos_keys(myDB,count):
     
     onehour = (60 * 60)
 
-    keys = [key,keyhugo2,keyhugo3,keyjacome]
+    keys = [key]
 
     timeperkey = int(onehour / len(keys))
 
