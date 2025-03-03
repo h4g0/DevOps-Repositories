@@ -178,7 +178,7 @@ def main():
     subparsers = parser.add_subparsers(dest='command', required=True)
 
     # Subcommand for getting random repositories
-    get_random_parser = subparsers.add_parser('get_random', help='Get random repositories')
+    get_random_parser = subparsers.add_parser('get_repositories', help='Get random repositories')
     get_random_parser.add_argument('start', type=str, help='Start date')
     get_random_parser.add_argument('end', type=str, help='End date')
     get_random_parser.add_argument('stars', type=int, help='Minimum stars')
