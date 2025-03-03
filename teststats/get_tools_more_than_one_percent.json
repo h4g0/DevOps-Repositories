@@ -1,0 +1,54 @@
+[
+  [
+    "Concourse",
+    1508
+  ],
+  [
+    "Drone",
+    1220
+  ],
+  [
+    "Kubernetes",
+    1136
+  ],
+  [
+    "GitHubActions",
+    10529
+  ],
+  [
+    "GoCD",
+    621
+  ],
+  [
+    "Travis",
+    6677
+  ],
+  [
+    "AppVeyor",
+    1063
+  ],
+  [
+    "Codefresh",
+    448
+  ],
+  [
+    "GitLab",
+    610
+  ],
+  [
+    "Jenkins",
+    896
+  ],
+  [
+    "AWS CodePipeline",
+    262
+  ],
+  [
+    "Google Cloud Build",
+    301
+  ],
+  [
+    "CircleCI",
+    1304
+  ]
+]

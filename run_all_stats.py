@@ -39,25 +39,25 @@ def run_all_stats_and_save(dataset, stats_folder):
     functions = {
         "get_cicd_percent_per_year": get_cicd_percent_per_year,
         "get_language_number_of_tools_distribution": get_language_number_of_tools_distribution,
-        "get_languages_cicd": get_languages_cicd,
-        "get_languages_cicd_morethanone": get_languages_cicd_morethanone,
+        #"get_languages_cicd": get_languages_cicd,
+        #"get_languages_cicd_morethanone": get_languages_cicd_morethanone,
         "get_languages_more_than_one_percent": get_languages_more_than_one_percent,
         "get_map_tool_tool": get_map_tool_tool,
         "get_number_of_tools_distribution": get_number_of_tools_distribution,
         "get_number_tools_per_year": get_number_tools_per_year,
         "get_programming_languages": get_programming_languages,
-        "get_programming_languages_all": get_programming_languages_all,
+        #"get_programming_languages_all": get_programming_languages_all,
         "get_programming_languages_repos": get_programming_languages_repos,
         "get_programming_languages_repos_normalized": get_programming_languages_repos_normalized,
         "get_stats_repos_per_tool": get_stats_repos_per_tool,
         "get_tools_language_cicd": get_tools_language_cicd,
         "get_tools_more_than_one_percent": get_tools_more_than_one_percent,
-        "migrations_programming_language": migrations_programming_language,
-        "migrations_programming_languages_to_from": migrations_programming_languages_to_from,
-        "migrations_tools": migrations_tools,
-        "migrations_tools_time_to_fall": migrations_tools_time_to_fall,
-        "migrations_travis": migrations_travis,
-        "percentage_tools_2019_2023": percentage_tools_2019_2023
+        #"migrations_programming_language": migrations_programming_language,
+        #"migrations_programming_languages_to_from": migrations_programming_languages_to_from,
+        #"migrations_tools": migrations_tools,
+        #"migrations_tools_time_to_fall": migrations_tools_time_to_fall,
+        #"migrations_travis": migrations_travis,
+        #"percentage_tools_2019_2023": percentage_tools_2019_2023
     }
     
     # Execute each function and save results

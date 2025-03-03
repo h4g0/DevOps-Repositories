@@ -202,6 +202,9 @@ def main():
         myDB = DB()
         process_repositories(myDB)
     elif args.command == 'run_stats':
-        run_all_stats_and_save(args.dataset, args.stats_folder)
+        f = open(args.dataset,encoding="utf8")
+        data = json.load(f)
+
+        run_all_stats_and_save(data, args.stats_folder)
 
 main()
