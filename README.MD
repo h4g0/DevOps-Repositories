@@ -47,12 +47,12 @@ uri = "mongodb://username:password@localhost:27017/devops_analysis"
 
 The tool provides several commands through the main script:
 
-### Fetch Random Repositories
+### Fetch Repositories
 
 Retrieves repositories from GitHub based on date range and minimum star count.
 
 ```bash
-python main.py get_random <start_date> <end_date> <min_stars>
+python main.py get_repositories  <start_date> <end_date> <min_stars>
 ```
 
 | Parameter | Format | Description |
@@ -63,7 +63,7 @@ python main.py get_random <start_date> <end_date> <min_stars>
 
 **Example:**
 ```bash
-python main.py get_random 2022-01-01 2022-12-31 100
+python main.py get_repositories  2022-01-01 2022-12-31 100
 ```
 
 ### Process Repositories
@@ -106,7 +106,7 @@ vim keys.py
 # Edit keys.py with your credentials
 
 # 2. Collect repositories from 2023 with at least 500 stars
-python main.py get_random 2023-01-01 2023-12-31 500
+python main.py get_repositories 2023-01-01 2023-12-31 500
 
 # 3. Process the collected repositories
 python main.py process

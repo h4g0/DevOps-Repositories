@@ -195,23 +195,13 @@ def main():
     args = parser.parse_args()
 
     # Call the appropriate function based on the command
-    if args.command == 'get_random':
-        get_all_random_repositories_dates(args.start, args.end, args.stars)
+    if args.command == 'get_repositories':
+        myDB = DB()
+        get_repos_data_dates(myDB,args.start, args.end, args.stars)
     elif args.command == 'process':
-        process_repositories(DB)
+        myDB = DB()
+        process_repositories(myDB)
     elif args.command == 'run_stats':
         run_all_stats_and_save(args.dataset, args.stats_folder)
-
-#def main():
-    
-    #f = open('Repositories.random-processed.json',encoding="utf8")
-    ##f = open('Repositories.entreprise_repos.json',encoding="utf8")
-    #f = open('Repositories.repo_tools_history.json',encoding="utf8")
-    #f = open('Repositories.entreprise_tools_history.json',encoding="utf8")
-
-
-    #data2 = json.load(f)
-
-   
 
 main()

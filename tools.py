@@ -295,8 +295,7 @@ def get_all_random_repositories_dates(start,end,stars):
     
     new_repos = get_random_repositories_day(start,end,0)
 
-    add_new_repos(new_repos)
-    
+    add_new_repos(new_repos)    
     page = 1
     
     while(len(new_repos) > 0):
